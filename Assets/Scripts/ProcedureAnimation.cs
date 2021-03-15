@@ -7,6 +7,12 @@ public class ProcedureAnimation : MonoBehaviour
     [SerializeField]
     private Transform _pointer;
 
+    [SerializeField]
+    private float _angleLimitMin;
+
+    [SerializeField]
+    private float _angleLimitMax;
+
     private Transform[] _segments;
     private Dictionary<Transform, float> _segmentsLenght;
 
@@ -40,8 +46,6 @@ public class ProcedureAnimation : MonoBehaviour
                 float a = Vector2.SignedAngle(direction, Vector2.down) * -1f;
                 segment.localRotation = Quaternion.Euler(0f, 0f, a);
 
-                Debug.DrawLine(segment.position, target.position, Color.red);
-
                 // SET POSITION
                 float dx = Mathf.Cos(Mathf.Deg2Rad * (a + 270f)) * _segmentsLenght[segment];
                 float dy = Mathf.Sin(Mathf.Deg2Rad * (a + 270f)) * _segmentsLenght[segment];
@@ -49,24 +53,24 @@ public class ProcedureAnimation : MonoBehaviour
             }
         }
 
+        // CHECK LIMITS
+        Vector3 topDir = _segments[1].position - _segments[2].position;
+        Vector3 downDir = _segments[2].position - _segments[3].position;
+
+        float angle = Vector2.SignedAngle(topDir, downDir);
+        if (angle < _angleLimitMin || angle > _angleLimitMax)
+        {
+            Vector3 globalDir = _segments[3].position - _segments[1].position;
+            _segments[0].localRotation = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(globalDir, Vector2.right));
+            float yRootOffset = _segments[2].position.y - _segments[1].position.y;
+            _segments[2].position = new Vector2(_segments[2].position.x, _segments[1].position.y- yRootOffset);
+            _segments[0].localRotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+
         //MOVE TO ROOT
         Vector3 offset = _segments[1].localPosition;
         for (int i = 1; i < _segments.Length; i++) 
             _segments[i].position -= offset;
-    }
-
-
-    private void SetRotation(Transform segment, Transform target)
-    {
-       
-
-    }
-
-    private void SetPosition(Transform segment, Transform target) 
-    {
-        Vector2 targetPosition = target.position;
-
-        
     }
 
     private Transform GetTarget(int i)
