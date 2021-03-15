@@ -33,6 +33,15 @@ public class ProcedureAnimation : MonoBehaviour
 
     private void Update()
     {
+        _segments[0].rotation = Quaternion.Euler(0f, 0f, 0f);
+
+        RotateAndMove();
+        CheckLimits();
+        MoveToRoot();
+    }
+
+    private void RotateAndMove()
+    {
         for (int i = _segments.Length - 1; i >= 1; i--)
         {
             Transform target = GetTarget(i);
@@ -52,7 +61,10 @@ public class ProcedureAnimation : MonoBehaviour
                 segment.position = target.position - new Vector3(dx, dy);
             }
         }
+    }
 
+    private void CheckLimits()
+    {
         // CHECK LIMITS
         Vector3 topDir = _segments[1].position - _segments[2].position;
         Vector3 downDir = _segments[2].position - _segments[3].position;
@@ -61,15 +73,19 @@ public class ProcedureAnimation : MonoBehaviour
         if (angle < _angleLimitMin || angle > _angleLimitMax)
         {
             Vector3 globalDir = _segments[3].position - _segments[1].position;
-            _segments[0].localRotation = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(globalDir, Vector2.right));
+            _segments[0].rotation = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(globalDir, Vector2.right));
             float yRootOffset = _segments[2].position.y - _segments[1].position.y;
-            _segments[2].position = new Vector2(_segments[2].position.x, _segments[1].position.y- yRootOffset);
-            _segments[0].localRotation = Quaternion.Euler(0f, 0f, 0f);
+            _segments[2].position = new Vector2(_segments[2].position.x, _segments[1].position.y - yRootOffset);
+            _segments[0].rotation = Quaternion.Euler(0f, 0f, 0f);
+            RotateAndMove();
         }
+    }
 
+    private void MoveToRoot()
+    {
         //MOVE TO ROOT
         Vector3 offset = _segments[1].localPosition;
-        for (int i = 1; i < _segments.Length; i++) 
+        for (int i = 1; i < _segments.Length; i++)
             _segments[i].position -= offset;
     }
 
