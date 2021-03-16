@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent( typeof( Rigidbody2D ) )]
+
 public class KinematicsPointer : MonoBehaviour
 {
     private Motion _motion;

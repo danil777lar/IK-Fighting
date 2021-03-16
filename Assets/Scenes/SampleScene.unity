@@ -131,6 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 51819926}
   - component: {fileID: 51819927}
+  - component: {fileID: 51819928}
   m_Layer: 8
   m_Name: BackLeg
   m_TagString: Untagged
@@ -164,6 +165,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &51819928
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51819925}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 1
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &84573146
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,6 +947,7 @@ GameObject:
   m_Component:
   - component: {fileID: 923051835}
   - component: {fileID: 923051836}
+  - component: {fileID: 923051837}
   m_Layer: 8
   m_Name: BackArm
   m_TagString: Untagged
@@ -958,6 +981,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &923051837
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923051834}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 1
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &952947320
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,10 +1042,8 @@ GameObject:
   m_Component:
   - component: {fileID: 956354806}
   - component: {fileID: 956354805}
-  - component: {fileID: 956354807}
   - component: {fileID: 956354809}
   - component: {fileID: 956354808}
-  - component: {fileID: 956354810}
   - component: {fileID: 956354811}
   m_Layer: 8
   m_Name: Body
@@ -1079,20 +1121,6 @@ Transform:
   m_Father: {fileID: 863892205}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &956354807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956354804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 971c07336b12c19498cbfde25f895927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _backLegPointer: {fileID: 51819927}
-  _frontLegPointer: {fileID: 1768281211}
 --- !u!114 &956354808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1131,18 +1159,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9474232, y: 2.75}
   m_EdgeRadius: 0
---- !u!114 &956354810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956354804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cf53fb5bc8a2e0439d320c16a3e59d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &956354811
 Rigidbody2D:
   serializedVersion: 4
@@ -1395,6 +1411,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1185749817}
+  - component: {fileID: 1185749818}
   m_Layer: 8
   m_Name: Person
   m_TagString: Untagged
@@ -1418,6 +1435,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1185749818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185749816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a1c1ac24742e44287007cadf52db1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyPointer: {fileID: 956354808}
+  _frontArmPointer: {fileID: 1303297856}
+  _backArmPointer: {fileID: 923051836}
+  _frontLegPointer: {fileID: 1768281211}
+  _backLegPointer: {fileID: 51819927}
+  _defaultState: {fileID: 11400000, guid: 121be6b8e5059624586aa2baf877ee4d, type: 2}
 --- !u!1 &1303297854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1428,6 +1463,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1303297855}
   - component: {fileID: 1303297856}
+  - component: {fileID: 1303297857}
   m_Layer: 8
   m_Name: FrontArm
   m_TagString: Untagged
@@ -1461,6 +1497,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &1303297857
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303297854}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 1
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1438126384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1785,6 +1842,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1768281210}
   - component: {fileID: 1768281211}
+  - component: {fileID: 1768281212}
   m_Layer: 8
   m_Name: FrontLeg
   m_TagString: Untagged
@@ -1818,6 +1876,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &1768281212
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768281209}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 1
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1895720390
 GameObject:
   m_ObjectHideFlags: 0
