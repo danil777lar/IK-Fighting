@@ -11,7 +11,7 @@ public class KinematicsPointer : MonoBehaviour
     public delegate void MotionFinished();
     public event MotionFinished MotionFinishedEvent;
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_motion != null) 
         {

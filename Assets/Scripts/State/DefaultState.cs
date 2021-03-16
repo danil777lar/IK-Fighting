@@ -9,7 +9,9 @@ public class DefaultState : State
     {
         _bodyPointer.SetMotion( new BodyControllMotion() );
         _frontLegPointer.SetMotion( new StepMotion(_bodyPointer.transform, _backLegPointer.transform) );
-        _backLegPointer.SetMotion(new StepMotion(_bodyPointer.transform, _frontLegPointer.transform));
+        _backLegPointer.SetMotion( new StepMotion(_bodyPointer.transform, _frontLegPointer.transform) );
+        _frontArmPointer.SetMotion( new ArmCalmMotion(_bodyPointer.transform) );
+        _backArmPointer.SetMotion(new ArmCalmMotion(_bodyPointer.transform));
     }
 
     public override void Update() { }

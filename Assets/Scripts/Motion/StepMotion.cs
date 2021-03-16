@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class StepMotion : Motion
 {
-    const float Y_POSITION = -3.041f;
+    const float Y_POSITION = -2.5f;
+    const float DURATION_MIN = 0.01f;
+    const float DURATION_MAX = 0.5f;
 
     private Transform _bodyPointer;
     private Transform _otherLegPointer;
 
-    private float _stepDuration = 0.3f;
+    private Rigidbody2D _rb;
+
     private float _startTime = -1f;
 
     private Vector2[] _animationPoints;
@@ -18,6 +21,12 @@ public class StepMotion : Motion
     {
         _bodyPointer = bodyPointer;
         _otherLegPointer = otherLegPointer;
+        _rb = _bodyPointer.GetComponent<Rigidbody2D>();
+    }
+
+    public override void Init(Transform pointer)
+    {
+        base.Init(pointer);
     }
 
     override public void UpdateMotion() 
@@ -28,7 +37,13 @@ public class StepMotion : Motion
 
     private void Animate()
     {
-        float t = (Time.time - _startTime) / _stepDuration;
+        float speed = _rb.velocity.x < 0f ? _rb.velocity.x * -1f : _rb.velocity.x;
+        float duration = (10f - speed) / 10f;
+        if (duration < 0f) duration = duration * -1f;
+        if (duration < DURATION_MIN) duration = DURATION_MIN;
+        if (duration > DURATION_MAX) duration = DURATION_MAX;
+
+        float t = (Time.time - _startTime) / duration;
         _pointer.position = QuadraticLerp(_animationPoints[0], _animationPoints[1], _animationPoints[2], t);
         if (t >= 1) _startTime = -1f;
     }
@@ -46,7 +61,7 @@ public class StepMotion : Motion
             Vector2 finish = new Vector2();
             finish.x = isBodyLeft ? _bodyPointer.position.x - 2f : _bodyPointer.position.x + 2f;
             finish.y = Y_POSITION;
-            Vector2 center = new Vector2( (start.x + finish.x) / 2, Y_POSITION + 2f );
+            Vector2 center = new Vector2( (start.x + finish.x) / 2, Y_POSITION + 1f );
 
             _animationPoints = new Vector2[]{start, center, finish};
             _startTime = Time.time;

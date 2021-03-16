@@ -31,7 +31,7 @@ public class ProcedureAnimation : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         _segments[0].rotation = Quaternion.Euler(0f, 0f, 0f);
 
@@ -53,7 +53,7 @@ public class ProcedureAnimation : MonoBehaviour
                 // SET ROTATION
                 Vector2 direction = target.position - segment.position;
                 float a = Vector2.SignedAngle(direction, Vector2.down) * -1f;
-                segment.localRotation = Quaternion.Euler(0f, 0f, a);
+                segment.rotation = Quaternion.Euler(0f, 0f, a);
 
                 // SET POSITION
                 float dx = Mathf.Cos(Mathf.Deg2Rad * (a + 270f)) * _segmentsLenght[segment];
@@ -86,7 +86,7 @@ public class ProcedureAnimation : MonoBehaviour
         //MOVE TO ROOT
         Vector3 offset = _segments[1].localPosition;
         for (int i = 1; i < _segments.Length; i++)
-            _segments[i].position -= offset;
+            _segments[i].localPosition -= offset;
     }
 
     private Transform GetTarget(int i)
