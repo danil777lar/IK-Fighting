@@ -19,6 +19,9 @@ public class JumpState : State
     public override void Update()
     {
         if (_bodyRb.transform.position.y <= -0.4f)
+        {
+            _bodyRb.drag = 1f;
             _stateHolder.SetState(Resources.Load<State>("DefaultState"));
+        }
     }
 }

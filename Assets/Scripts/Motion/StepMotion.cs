@@ -34,7 +34,6 @@ public class StepMotion : Motion
 
     override public void UpdateMotion() 
     {
-        Debug.Log("update");
         if (_startTime != -1f) Animate();
         else if (_pointer.position.y != Y_POSITION) MoveToDefaultPosition();
         else if (_otherLegPointer.position.y <= Y_POSITION) CheckBodyPosition();
@@ -43,7 +42,6 @@ public class StepMotion : Motion
     private void MoveToDefaultPosition()
     {
         _pointer.position = new Vector2(_pointer.position.x, Y_POSITION);
-        Debug.Log("goto");
     }
 
     private void Animate()

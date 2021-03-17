@@ -6,7 +6,7 @@ public class JumpLegMotion : Motion
 {
     private Transform _bodyPointer;
 
-    private Vector3 _positionOffset = new Vector3(0f, -2f);
+    private Vector3 _positionOffset = new Vector3(-0.5f, -1.5f);
     private float _timeOffset = 0.2f;
 
     public JumpLegMotion(Transform body) 
