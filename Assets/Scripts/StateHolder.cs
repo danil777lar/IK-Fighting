@@ -22,7 +22,7 @@ public class StateHolder : MonoBehaviour
     public void SetState(State newState, float duration = -1f)
     {
         _currentState = Instantiate(newState);
-        _currentState.Init(_bodyPointer, _frontArmPointer, _backArmPointer, _frontLegPointer, _backLegPointer);
+        _currentState.Init(this, _bodyPointer, _frontArmPointer, _backArmPointer, _frontLegPointer, _backLegPointer);
 
         if (duration != -1f) Invoke("SetDefaultState", duration);
     }

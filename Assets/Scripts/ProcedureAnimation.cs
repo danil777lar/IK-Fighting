@@ -13,13 +13,18 @@ public class ProcedureAnimation : MonoBehaviour
     [SerializeField]
     private float _angleLimitMax;
 
+    [SerializeField]
+    private bool _isSpriteReverse;
+
     private Transform[] _segments;
     private Dictionary<Transform, float> _segmentsLenght;
+    private SpriteRenderer[] _spriteRenderers;
 
 
     private void Start()
     {
         _segments = GetComponentsInChildren<Transform>();
+        _spriteRenderers = new SpriteRenderer[]{_segments[1].GetComponent<SpriteRenderer>(), _segments[2].GetComponent<SpriteRenderer>()};
 
         _segmentsLenght = new Dictionary<Transform, float>();
         for (int i = 0; i < _segments.Length - 1; i++) 
@@ -69,16 +74,24 @@ public class ProcedureAnimation : MonoBehaviour
         Vector3 topDir = _segments[1].position - _segments[2].position;
         Vector3 downDir = _segments[2].position - _segments[3].position;
 
+        bool flipSprite = false;
         float angle = Vector2.SignedAngle(topDir, downDir);
         if (angle < _angleLimitMin || angle > _angleLimitMax)
         {
-            Vector3 globalDir = _segments[3].position - _segments[1].position;
-            _segments[0].rotation = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(globalDir, Vector2.right));
-            float yRootOffset = _segments[2].position.y - _segments[1].position.y;
-            _segments[2].position = new Vector2(_segments[2].position.x, _segments[1].position.y - yRootOffset);
-            _segments[0].rotation = Quaternion.Euler(0f, 0f, 0f);
-            RotateAndMove();
+            flipSprite = _isSpriteReverse;
+            if (!_isSpriteReverse)
+            {
+                Vector3 globalDir = _segments[3].position - _segments[1].position;
+                _segments[0].rotation = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(globalDir, Vector2.right));
+                float yRootOffset = _segments[2].position.y - _segments[1].position.y;
+                _segments[2].position = new Vector2(_segments[2].position.x, _segments[1].position.y - yRootOffset);
+                _segments[0].rotation = Quaternion.Euler(0f, 0f, 0f);
+                RotateAndMove();
+            }
         }
+
+        foreach (SpriteRenderer sprite in _spriteRenderers)
+            sprite.flipX = flipSprite;
     }
 
     private void MoveToRoot()

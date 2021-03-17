@@ -18,7 +18,7 @@ public class KinematicsPointer : MonoBehaviour
             if (_motion.IsFinished)
             {
                 _motion = null;
-                MotionFinishedEvent();
+                if (MotionFinishedEvent != null) MotionFinishedEvent();
             }
             else _motion.UpdateMotion();
         }

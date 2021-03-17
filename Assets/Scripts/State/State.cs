@@ -10,13 +10,19 @@ public abstract class State : ScriptableObject
     protected KinematicsPointer _frontLegPointer;
     protected KinematicsPointer _backLegPointer;
 
-    public virtual void Init(KinematicsPointer body, KinematicsPointer frontArm, KinematicsPointer backArm, KinematicsPointer frontLeg, KinematicsPointer backLeg)
+    protected StateHolder _stateHolder;
+
+    public virtual void Init(StateHolder stateHolder, KinematicsPointer body, KinematicsPointer frontArm,
+        KinematicsPointer backArm, KinematicsPointer frontLeg, KinematicsPointer backLeg)
     {
         _bodyPointer = body;
         _frontArmPointer = frontArm;
         _backArmPointer = backArm;
         _frontLegPointer = frontLeg;
         _backLegPointer = backLeg;
+
+        _stateHolder = stateHolder;
+
         Start();
     }
 

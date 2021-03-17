@@ -15,13 +15,16 @@ public class StepMotion : Motion
 
     private float _startTime = -1f;
 
+    private bool _mostPriority;
+
     private Vector2[] _animationPoints;
 
-    public StepMotion(Transform bodyPointer, Transform otherLegPointer) 
+    public StepMotion(Transform bodyPointer, Transform otherLegPointer, bool mostPriority) 
     {
         _bodyPointer = bodyPointer;
         _otherLegPointer = otherLegPointer;
         _rb = _bodyPointer.GetComponent<Rigidbody2D>();
+        _mostPriority = mostPriority;
     }
 
     public override void Init(Transform pointer)
@@ -31,8 +34,16 @@ public class StepMotion : Motion
 
     override public void UpdateMotion() 
     {
+        Debug.Log("update");
         if (_startTime != -1f) Animate();
+        else if (_pointer.position.y != Y_POSITION) MoveToDefaultPosition();
         else if (_otherLegPointer.position.y <= Y_POSITION) CheckBodyPosition();
+    }
+
+    private void MoveToDefaultPosition()
+    {
+        _pointer.position = new Vector2(_pointer.position.x, Y_POSITION);
+        Debug.Log("goto");
     }
 
     private void Animate()
@@ -50,10 +61,13 @@ public class StepMotion : Motion
 
     private void CheckBodyPosition() 
     {
+        bool leftestLeg = _mostPriority ? _pointer.position.x <= _otherLegPointer.position.x : _pointer.position.x < _otherLegPointer.position.x;
+        bool rightestLeg = _mostPriority ? _pointer.position.x > _otherLegPointer.position.x : _pointer.position.x > _otherLegPointer.position.x;
+
         bool isBodyLeft = (_bodyPointer.position.x < _pointer.position.x) && (_bodyPointer.position.x < _otherLegPointer.position.x) 
-            && _pointer.position.x > _otherLegPointer.position.x;
+            && rightestLeg;
         bool isBodyRight = (_bodyPointer.position.x > _pointer.position.x) && (_bodyPointer.position.x > _otherLegPointer.position.x)
-            && _pointer.position.x < _otherLegPointer.position.x;
+            && leftestLeg;
 
         if (isBodyLeft || isBodyRight) 
         {
