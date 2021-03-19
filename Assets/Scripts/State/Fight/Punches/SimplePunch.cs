@@ -5,13 +5,14 @@ using UnityEngine;
 public class SimplePunch : Punch
 {
 
-    public SimplePunch(int hand) : base (hand) {}
+    public SimplePunch(int hand, Transform root) : base (hand, root) {}
 
     protected override void Start() 
     {
         base.Start();
-        _currentHandPointer.SetMotion( new PunchStartMotion( _bodyPointer.transform, _controllInterface, _hand ) );
+        _currentHandPointer.SetMotion( new PunchStartMotion( _armRoot.transform, _controllInterface, _hand ) );
         _currentHandPointer.MotionFinishedEvent += OnPunchStart;
+        Debug.Log("simplePunchStart");
 
         KinematicsPointer otherHandPointer = _currentHandPointer == _frontArmPointer ? _backArmPointer : _frontArmPointer;
         otherHandPointer.SetMotion( new ArmCalmMotion( _bodyPointer.transform ) );
@@ -21,7 +22,9 @@ public class SimplePunch : Punch
 
     public void OnPunchStart() 
     {
-        _currentHandPointer.SetMotion(new SimplePunchMotion(_bodyPointer.transform));
+        _currentHandPointer.MotionFinishedEvent -= OnPunchStart;
+        _currentHandPointer.SetMotion(new SimplePunchMotion(_armRoot.transform));
+        Debug.Log("punchStart");
         _currentHandPointer.MotionFinishedEvent += OnPunchEnd;
 
         _bodyPointer.SetMotion(new BodySnatchMotion());

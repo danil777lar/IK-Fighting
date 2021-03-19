@@ -8,11 +8,13 @@ public class Punch : State
     public static readonly int FRONT_HAND = 1;
 
     protected int _hand;
+    protected Transform _armRoot;
     protected KinematicsPointer _currentHandPointer;
 
-    public Punch(int hand) 
+    public Punch(int hand, Transform root) 
     {
         _hand = hand;
+        _armRoot = root;
     }
 
     protected override void Start()

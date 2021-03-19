@@ -8,16 +8,21 @@ using UnityEngine;
 
 public class PunchHolder : MonoBehaviour
 {
+    [SerializeField] private Transform _armRoot;
+
     private IControll _controllInterface;
 
-    private State _frontArmState = new SimplePunch(Punch.FRONT_HAND);
-    private State _backArmState = new SimplePunch(Punch.BACK_HAND);
+    private State _frontArmState;
+    private State _backArmState;
     private State _techniqueState;
 
     private StateHolder _stateHolder;
 
     void Start()
     {
+        _frontArmState = new SimplePunch(Punch.FRONT_HAND, _armRoot);
+        _backArmState = new SimplePunch(Punch.BACK_HAND, _armRoot);
+
         _stateHolder = GetComponent<StateHolder>();
         _controllInterface = GetComponent<IControll>();
     }

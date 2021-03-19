@@ -6,13 +6,14 @@ public class SimplePunchMotion : Motion
 {
     const float DURATION = 0.2f;
 
-    private Transform _bodyPointer;
-    private float _startTime = -1f;
-    private Vector2 _startPosition;
+    private Transform _armRoot;
 
-    public SimplePunchMotion(Transform body)
+    private float _startTime = -1f;
+    private Vector3 _startPosition;
+
+    public SimplePunchMotion(Transform root)
     {
-        _bodyPointer = body;
+        _armRoot = root;
     }
 
     public override void Init(Transform pointer)
@@ -27,7 +28,10 @@ public class SimplePunchMotion : Motion
         if (_startTime != -1f)
         {
             float t = (Time.time - _startTime) / DURATION;
-            Vector2 targetPosition = _bodyPointer.localPosition + new Vector3(3f, 2f);
+
+            Vector3 deltaPosition = _armRoot.position - _startPosition;
+
+            Vector2 targetPosition = _armRoot.position + deltaPosition;
             _pointer.position = Vector2.Lerp(_startPosition, targetPosition, t);
 
             if (t >= 1) IsFinished = true;

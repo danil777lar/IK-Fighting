@@ -15,6 +15,8 @@ public class DefaultState : State
         _backArmPointer.SetMotion(new ArmCalmMotion(_bodyPointer.transform));
 
         _bodyRb = _bodyPointer.GetComponent<Rigidbody2D>();
+        _bodyRb.gravityScale = 0f;
+        _bodyRb.drag = 1f;
     }
 
     public override void Update() 

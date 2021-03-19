@@ -28,9 +28,6 @@ public class BodyControllMotion : Motion
         Vector2 targetPosition = new Vector2(_pointer.position.x, yPosition);
         _pointer.position = Vector2.Lerp(_pointer.position, targetPosition, t);
 
-        float a = _rb.velocity.x * -4f;
-        _pointer.rotation = Quaternion.Euler(0f, 0f, a);
-
         if (_pointer.position.y >= -1.5f)
         {
             if (_controllInterface.GetMoveRight()) _rb.AddForce(new Vector2(_speed, _rb.velocity.y));

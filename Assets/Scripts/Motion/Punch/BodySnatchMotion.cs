@@ -10,7 +10,7 @@ public class BodySnatchMotion : Motion
     {
         base.Init(pointer);
         Rigidbody2D rb = _pointer.GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(0f, 0f);
+        //rb.velocity = new Vector2(0f, 0f);
         rb.AddForce(new Vector2(5f, 0f), ForceMode2D.Impulse);
     }
 }

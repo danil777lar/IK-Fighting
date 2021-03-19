@@ -12,13 +12,14 @@ public class JumpState : State
         _backLegPointer.SetMotion( new JumpLegMotion(_bodyPointer.transform) );
 
         _bodyRb = _bodyPointer.GetComponent<Rigidbody2D>();
+        _bodyRb.gravityScale = 1f;
+        _bodyRb.drag = 0f;
     }
 
     public override void Update()
     {
         if (_bodyRb.transform.position.y <= -0.4f)
         {
-            _bodyRb.drag = 1f;
             _stateHolder.SetState(new DefaultState());
         }
     }
