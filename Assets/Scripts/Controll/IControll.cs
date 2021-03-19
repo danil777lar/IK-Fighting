@@ -14,7 +14,7 @@ public interface IControll
 
     bool GetAttackButtonDown(int button);
 
-    bool GetAttackButtonUp(int button);
+    bool GetAttackButton(int button);
 
     float GetAttackButtonAngle(int button);
 }

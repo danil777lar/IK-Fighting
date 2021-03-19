@@ -9,7 +9,7 @@ public class EnemyBotControll : MonoBehaviour, IControll
         return false;
     }
 
-    public bool GetAttackButtonUp(int button)
+    public bool GetAttackButton(int button)
     {
         return false;
     }

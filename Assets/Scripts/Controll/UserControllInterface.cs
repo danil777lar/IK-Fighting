@@ -13,9 +13,9 @@ public class UserControllInterface : MonoBehaviour, IControll
         return Input.GetMouseButtonDown(button);
     }
 
-    public bool GetAttackButtonUp(int button)
+    public bool GetAttackButton(int button)
     {
-        return Input.GetMouseButtonUp(button);
+        return Input.GetMouseButton(button);
     }
 
     public float GetAttackButtonAngle(int button)

@@ -30,7 +30,7 @@ public class PunchStartMotion : Motion
 
     public override void UpdateMotion() 
     {
-        if (!_controllInterface.GetAttackButtonUp(_hand))
+        if (_controllInterface.GetAttackButton(_hand))
         {
             if (_startTime != -1f)
             {
