@@ -26,7 +26,7 @@ public class KinematicsPointer : MonoBehaviour
 
     public void SetMotion(Motion motion)
     {
-        motion.Init(transform);
+        if ( motion != null ) motion.Init(transform);
         _motion = motion;
     }
 }

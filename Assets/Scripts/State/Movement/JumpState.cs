@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObjects/States/JumpState")]
-
 public class JumpState : State
 {
     private Rigidbody2D _bodyRb; 
@@ -21,7 +19,7 @@ public class JumpState : State
         if (_bodyRb.transform.position.y <= -0.4f)
         {
             _bodyRb.drag = 1f;
-            _stateHolder.SetState(Resources.Load<State>("DefaultState"));
+            _stateHolder.SetState(new DefaultState());
         }
     }
 }

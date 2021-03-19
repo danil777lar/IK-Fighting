@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class State : ScriptableObject
+public abstract class State
 {
     protected KinematicsPointer _bodyPointer;
     protected KinematicsPointer _frontArmPointer;
@@ -11,8 +11,9 @@ public abstract class State : ScriptableObject
     protected KinematicsPointer _backLegPointer;
 
     protected StateHolder _stateHolder;
+    protected IControll _controllInterface;
 
-    public virtual void Init(StateHolder stateHolder, KinematicsPointer body, KinematicsPointer frontArm,
+    public virtual void Init(StateHolder stateHolder, IControll controll, KinematicsPointer body, KinematicsPointer frontArm,
         KinematicsPointer backArm, KinematicsPointer frontLeg, KinematicsPointer backLeg)
     {
         _bodyPointer = body;
@@ -22,6 +23,7 @@ public abstract class State : ScriptableObject
         _backLegPointer = backLeg;
 
         _stateHolder = stateHolder;
+        _controllInterface = controll;
 
         Start();
     }

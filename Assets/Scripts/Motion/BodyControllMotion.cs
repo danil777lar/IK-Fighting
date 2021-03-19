@@ -10,6 +10,10 @@ public class BodyControllMotion : Motion
     private float _speed = 10f;
     private Rigidbody2D _rb;
 
+    private IControll _controllInterface;
+
+    public BodyControllMotion(IControll controll) => _controllInterface = controll; 
+
     public override void Init(Transform pointer)
     {
         base.Init(pointer);
@@ -19,7 +23,7 @@ public class BodyControllMotion : Motion
 
     public override void UpdateMotion() 
     {
-        float yPosition = Input.GetKey("s") ? -1f : Y_POSITION;
+        float yPosition = _controllInterface.GetMoveDown() ? -1f : Y_POSITION;
         float t = Time.deltaTime / TIME_OFFSET;
         Vector2 targetPosition = new Vector2(_pointer.position.x, yPosition);
         _pointer.position = Vector2.Lerp(_pointer.position, targetPosition, t);
@@ -29,9 +33,9 @@ public class BodyControllMotion : Motion
 
         if (_pointer.position.y >= -1.5f)
         {
-            if (Input.GetKey("d")) _rb.AddForce(new Vector2(_speed, _rb.velocity.y));
-            if (Input.GetKey("a")) _rb.AddForce(new Vector2(-_speed, _rb.velocity.y));
-            if (Input.GetKey("w"))
+            if (_controllInterface.GetMoveRight()) _rb.AddForce(new Vector2(_speed, _rb.velocity.y));
+            if (_controllInterface.GetMoveLeft()) _rb.AddForce(new Vector2(-_speed, _rb.velocity.y));
+            if (_controllInterface.GetJump())
             {
                 _rb.velocity = new Vector2(_rb.velocity.x, 0f);
                 _rb.AddForce(new Vector2(0f, 10f), ForceMode2D.Impulse);
