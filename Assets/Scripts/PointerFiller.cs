@@ -35,10 +35,7 @@ public class PointerFiller : MonoBehaviour
         for (int i = 0; i < _pointers.Length; i++) 
         {
             if (motionDictionary.ContainsKey(i))
-            {
-                foreach (Motion motion in motionDictionary[i])
-                    _pointers[i].PushMotion( motion );
-            }
+                _pointers[i].PushMotion(motionDictionary[i]);
         }
     }
 

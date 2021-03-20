@@ -6,15 +6,27 @@ public class UserControllInterface : MonoBehaviour, IControll
 {
     [SerializeField] private Transform _armRoot;
 
-    // IControll members
-
     public bool GetAttackButtonDown(int button)
     {
+        bool isFewButtonsPressed = false;
+        for (int i = 0; i < 3; i++)
+            if (i != button)
+                isFewButtonsPressed = isFewButtonsPressed || Input.GetMouseButton(i);
+
+        if (isFewButtonsPressed) return false;
+
         return Input.GetMouseButtonDown(button);
     }
 
     public bool GetAttackButton(int button)
     {
+        /*bool isFewButtonsPressed = false;
+        for (int i = 0; i < 3; i++) 
+            if (i != button) 
+                isFewButtonsPressed = isFewButtonsPressed || Input.GetMouseButton(i);
+
+        if (isFewButtonsPressed) return false;*/
+
         return Input.GetMouseButton(button);
     }
 

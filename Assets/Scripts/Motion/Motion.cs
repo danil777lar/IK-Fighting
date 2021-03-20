@@ -16,5 +16,7 @@ public abstract class Motion
         _pointer = pointer;
     }
 
+    public virtual void MoveBack() { }
+
     public abstract void UpdateMotion();
 }

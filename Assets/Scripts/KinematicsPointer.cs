@@ -34,7 +34,22 @@ public class KinematicsPointer : MonoBehaviour
 
     public void PushMotion(Motion motion)
     {
+        foreach (Motion stackedMotion in _motionStack)
+            stackedMotion.MoveBack();
+
         motion.Init(this);
         _motionStack.Push(motion);
+    }
+
+    public void PushMotion(Motion[] motions) 
+    {
+        foreach (Motion stackedMotion in _motionStack)
+            stackedMotion.MoveBack();
+
+        foreach (Motion motion in motions) 
+        {
+            motion.Init(this);
+            _motionStack.Push(motion);
+        }
     }
 }
