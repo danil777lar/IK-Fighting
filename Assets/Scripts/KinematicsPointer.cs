@@ -11,7 +11,7 @@ public class KinematicsPointer : MonoBehaviour
     public delegate void MotionFinished();
     public event MotionFinished MotionFinishedEvent;
 
-    //public string MotionName;
+    public string MotionName;
 
     private void FixedUpdate()
     {
@@ -26,9 +26,9 @@ public class KinematicsPointer : MonoBehaviour
         else 
         {
             _motionStack.Peek().UpdateMotion();
-            /*MotionName = "";
+            MotionName = "";
             foreach (Motion m in _motionStack)
-                MotionName += " " + m.GetType().ToString();*/
+                MotionName += " " + m.GetType().ToString();
         }
     }
 

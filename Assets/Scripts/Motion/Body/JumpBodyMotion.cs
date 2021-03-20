@@ -17,7 +17,7 @@ public class JumpBodyMotion : Motion
 
     public override void UpdateMotion() 
     {
-        if (_pointerTransform.position.y <= BodyControllMotion.STAND_HEIGHT + 0.1f)
+        if (_pointerTransform.position.y <= BodyControllMotion.STAND_HEIGHT && _rb.velocity.y < 0f)
             IsFinished = true;
     }
 }
