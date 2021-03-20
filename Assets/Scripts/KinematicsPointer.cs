@@ -6,27 +6,35 @@ using UnityEngine;
 
 public class KinematicsPointer : MonoBehaviour
 {
-    private Motion _motion;
+    private Stack<Motion> _motionStack = new Stack<Motion>();
 
     public delegate void MotionFinished();
     public event MotionFinished MotionFinishedEvent;
 
+    //public string MotionName;
+
     private void FixedUpdate()
     {
-        if (_motion != null) 
+        if (_motionStack.Count <= 0) return;
+
+        if (_motionStack.Peek().IsFinished)
         {
-            if (_motion.IsFinished)
-            {
-                _motion = null;
-                if (MotionFinishedEvent != null) MotionFinishedEvent();
-            }
-            else _motion.UpdateMotion();
+            _motionStack.Pop();
+            _motionStack.Peek().Init(this);
+            if (MotionFinishedEvent != null) MotionFinishedEvent();
+        }
+        else 
+        {
+            _motionStack.Peek().UpdateMotion();
+            /*MotionName = "";
+            foreach (Motion m in _motionStack)
+                MotionName += " " + m.GetType().ToString();*/
         }
     }
 
-    public void SetMotion(Motion motion)
+    public void PushMotion(Motion motion)
     {
-        if ( motion != null ) motion.Init(transform);
-        _motion = motion;
+        motion.Init(this);
+        _motionStack.Push(motion);
     }
 }

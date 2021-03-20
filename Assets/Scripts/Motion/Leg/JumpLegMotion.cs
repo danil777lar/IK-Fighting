@@ -18,6 +18,9 @@ public class JumpLegMotion : Motion
     {
         float t = Time.deltaTime / _timeOffset;
         Vector2 targetPosition = _bodyPointer.localPosition + _positionOffset;
-        _pointer.localPosition = Vector2.Lerp(_pointer.localPosition, targetPosition, t);
+        _pointerTransform.localPosition = Vector2.Lerp(_pointerTransform.localPosition, targetPosition, t);
+
+        if (_bodyPointer.position.y <= BodyControllMotion.STAND_HEIGHT + 0.1f)
+            IsFinished = true;
     }
 }

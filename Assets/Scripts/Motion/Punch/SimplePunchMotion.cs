@@ -16,11 +16,11 @@ public class SimplePunchMotion : Motion
         _armRoot = root;
     }
 
-    public override void Init(Transform pointer)
+    public override void Init(KinematicsPointer pointer)
     {
         base.Init(pointer);
         _startTime = Time.time;
-        _startPosition = _pointer.position;
+        _startPosition = _pointerTransform.position;
     }
 
     public override void UpdateMotion()
@@ -32,7 +32,7 @@ public class SimplePunchMotion : Motion
             Vector3 deltaPosition = _armRoot.position - _startPosition;
 
             Vector2 targetPosition = _armRoot.position + deltaPosition;
-            _pointer.position = Vector2.Lerp(_startPosition, targetPosition, t);
+            _pointerTransform.position = Vector2.Lerp(_startPosition, targetPosition, t);
 
             if (t >= 1) IsFinished = true;
         }

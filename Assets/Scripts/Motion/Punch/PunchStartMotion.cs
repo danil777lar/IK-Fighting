@@ -21,11 +21,11 @@ public class PunchStartMotion : Motion
         _hand = hand;
     }
 
-    public override void Init(Transform pointer)
+    public override void Init(KinematicsPointer pointer)
     {
         base.Init(pointer);
         _startTime = Time.time;
-        _startPosition = _pointer.position;
+        _startPosition = _pointerTransform.position;
     }
 
     public override void UpdateMotion() 
@@ -43,7 +43,7 @@ public class PunchStartMotion : Motion
                 Vector2 targetPosition = _armRoot.position - new Vector3(dx, dy);
                 targetPosition.x -= 2f;
 
-                _pointer.position = Vector2.Lerp(_startPosition, targetPosition, t);
+                _pointerTransform.position = Vector2.Lerp(_startPosition, targetPosition, t);
             }
         }
         else IsFinished = true;

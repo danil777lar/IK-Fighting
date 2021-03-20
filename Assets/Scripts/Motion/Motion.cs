@@ -4,13 +4,15 @@ using UnityEngine;
 
 public abstract class Motion
 {
-    protected Transform _pointer;
+    protected Transform _pointerTransform;
+    protected KinematicsPointer _pointer;
 
     public bool IsFinished { get; protected set; }
 
 
-    public virtual void Init(Transform pointer) 
+    public virtual void Init(KinematicsPointer pointer) 
     {
+        _pointerTransform = pointer.transform;
         _pointer = pointer;
     }
 

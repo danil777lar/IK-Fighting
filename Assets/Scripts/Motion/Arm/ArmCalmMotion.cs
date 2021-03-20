@@ -23,6 +23,6 @@ public class ArmCalmMotion : Motion
     {
         float t = Time.deltaTime / _timeOffset;
         Vector2 targetPosition = _bodyPointer.localPosition + _positionOffset;
-        _pointer.localPosition = Vector2.Lerp( _pointer.localPosition, targetPosition, t); 
+        _pointerTransform.localPosition = Vector2.Lerp( _pointerTransform.localPosition, targetPosition, t); 
     }
 }

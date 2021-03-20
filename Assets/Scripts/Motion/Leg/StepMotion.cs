@@ -27,7 +27,7 @@ public class StepMotion : Motion
         _mostPriority = mostPriority;
     }
 
-    public override void Init(Transform pointer)
+    public override void Init(KinematicsPointer pointer)
     {
         base.Init(pointer);
     }
@@ -35,13 +35,13 @@ public class StepMotion : Motion
     override public void UpdateMotion() 
     {
         if (_startTime != -1f) Animate();
-        else if (_pointer.position.y != Y_POSITION) MoveToDefaultPosition();
+        else if (_pointerTransform.position.y != Y_POSITION) MoveToDefaultPosition();
         else if (_otherLegPointer.position.y <= Y_POSITION) CheckBodyPosition();
     }
 
     private void MoveToDefaultPosition()
     {
-        _pointer.position = new Vector2(_pointer.position.x, Y_POSITION);
+        _pointerTransform.position = new Vector2(_pointerTransform.position.x, Y_POSITION);
     }
 
     private void Animate()
@@ -53,23 +53,23 @@ public class StepMotion : Motion
         if (duration > DURATION_MAX) duration = DURATION_MAX;
 
         float t = (Time.time - _startTime) / duration;
-        _pointer.position = QuadraticLerp(_animationPoints[0], _animationPoints[1], _animationPoints[2], t);
+        _pointerTransform.position = QuadraticLerp(_animationPoints[0], _animationPoints[1], _animationPoints[2], t);
         if (t >= 1) _startTime = -1f;
     }
 
     private void CheckBodyPosition() 
     {
-        bool leftestLeg = _mostPriority ? _pointer.position.x <= _otherLegPointer.position.x : _pointer.position.x < _otherLegPointer.position.x;
-        bool rightestLeg = _mostPriority ? _pointer.position.x > _otherLegPointer.position.x : _pointer.position.x > _otherLegPointer.position.x;
+        bool leftestLeg = _mostPriority ? _pointerTransform.position.x <= _otherLegPointer.position.x : _pointerTransform.position.x < _otherLegPointer.position.x;
+        bool rightestLeg = _mostPriority ? _pointerTransform.position.x > _otherLegPointer.position.x : _pointerTransform.position.x > _otherLegPointer.position.x;
 
-        bool isBodyLeft = (_bodyPointer.position.x < _pointer.position.x) && (_bodyPointer.position.x < _otherLegPointer.position.x) 
+        bool isBodyLeft = (_bodyPointer.position.x < _pointerTransform.position.x) && (_bodyPointer.position.x < _otherLegPointer.position.x) 
             && rightestLeg;
-        bool isBodyRight = (_bodyPointer.position.x > _pointer.position.x) && (_bodyPointer.position.x > _otherLegPointer.position.x)
+        bool isBodyRight = (_bodyPointer.position.x > _pointerTransform.position.x) && (_bodyPointer.position.x > _otherLegPointer.position.x)
             && leftestLeg;
 
         if (isBodyLeft || isBodyRight) 
         {
-            Vector2 start = _pointer.position;
+            Vector2 start = _pointerTransform.position;
             Vector2 finish = new Vector2();
             finish.x = isBodyLeft ? _bodyPointer.position.x - 2f : _bodyPointer.position.x + 2f;
             finish.y = Y_POSITION;
