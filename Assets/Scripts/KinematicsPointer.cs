@@ -8,9 +8,7 @@ public class KinematicsPointer : MonoBehaviour
 {
     private Stack<Motion> _motionStack = new Stack<Motion>();
 
-    public delegate void MotionFinished();
-    public event MotionFinished MotionFinishedEvent;
-
+    //Debug
     public string MotionName;
 
     private void FixedUpdate()
@@ -21,8 +19,7 @@ public class KinematicsPointer : MonoBehaviour
         {
             _motionStack.Pop();
             _motionStack.Peek().Init(this);
-            if (MotionFinishedEvent != null) MotionFinishedEvent();
-        }
+        } 
         else 
         {
             _motionStack.Peek().UpdateMotion();
@@ -47,9 +44,8 @@ public class KinematicsPointer : MonoBehaviour
             stackedMotion.MoveBack();
 
         foreach (Motion motion in motions) 
-        {
-            motion.Init(this);
             _motionStack.Push(motion);
-        }
+
+        _motionStack.Peek().Init(this); ;
     }
 }

@@ -49,4 +49,8 @@ public class PunchStartMotion : Motion
         else IsFinished = true;
     }
 
+    public override void MoveBack()
+    {
+        IsFinished = true;
+    }
 }

@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7527a4c4eefaf7d4697edf22653c4a3f, type: 3}
   m_Name: Simple Punch
   m_EditorClassIdentifier: 
+  _weapon: {fileID: 87649593638510973, guid: e01e2f05d32d5c14d943866a3b0d5553, type: 3}

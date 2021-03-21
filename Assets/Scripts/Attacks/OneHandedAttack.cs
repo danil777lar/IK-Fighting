@@ -4,12 +4,17 @@ using UnityEngine;
 
 public abstract class OneHandedAttack : ScriptableObject
 {
-    public abstract Dictionary<int, Motion[]> GetMotion(Transform root, IControll controll, int pointerId);
+    [SerializeField] protected GameObject _weapon;
 
-    protected int GetHandKey(int pointerId) 
+    public GameObject GetWeaponObject() => _weapon;
+
+    protected int GetPointerId(int hand)
     {
-        if (pointerId == PointerFiller.BackArm) return 1;
-        if (pointerId == PointerFiller.FrontArm) return 0;
+        if (hand == 1) return PointerFiller.BackArm;
+        if (hand == 0) return PointerFiller.FrontArm;
         return -1;
     }
+
+    // abstract & virtual
+    public abstract Dictionary<int, Motion[]> GetMotion(AttackHolder attackHolder, Transform root, IControll controll, int hand);
 }

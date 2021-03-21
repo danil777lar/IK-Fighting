@@ -7,12 +7,12 @@ using UnityEngine;
 
 public class SimpleAttack : OneHandedAttack
 {
-    public override Dictionary<int, Motion[]> GetMotion(Transform root, IControll controll, int pointerId)
+    public override Dictionary<int, Motion[]> GetMotion(AttackHolder attackHolder, Transform root, IControll controll, int hand)
     {
         Dictionary<int, Motion[]> dict = new Dictionary<int, Motion[]>();
-
-        dict.Add( pointerId, new Motion[]{ new SimplePunchMotion(root), new PunchStartMotion(root, controll, GetHandKey(pointerId)) } );
-
+        Motion[] motionList = new Motion[] { new SimplePunchMotion(root, attackHolder), new PunchStartMotion(root, controll, hand) };
+        dict.Add( GetPointerId(hand),  motionList);
         return dict;
     }
+
 }
