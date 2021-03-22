@@ -11,6 +11,6 @@ public class BodyRotation : MonoBehaviour
     private void Update()
     {
         float a = _rb.velocity.x * -4f;
-        transform.rotation = Quaternion.Euler(0f, 0f, a);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, a), Time.deltaTime/0.1f);
     }
 }

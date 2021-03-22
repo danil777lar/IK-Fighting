@@ -30,6 +30,9 @@ public class StepMotion : Motion
     public override void Init(KinematicsPointer pointer)
     {
         base.Init(pointer);
+        Rigidbody2D rb = pointer.GetComponent<Rigidbody2D>();
+        rb.drag = 1f;
+        rb.gravityScale = 0f;
     }
 
     override public void UpdateMotion() 

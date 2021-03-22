@@ -9,6 +9,13 @@ public class ArmCalmMotion : Motion
     private Vector3 _positionOffset = new Vector3(1.5f, 0.5f);
     private float _timeOffset = 0.4f;
 
+    public override void Init(KinematicsPointer pointer)
+    {
+        base.Init(pointer);
+        Rigidbody2D rb = pointer.GetComponent<Rigidbody2D>();
+        rb.drag = 1f;
+        rb.gravityScale = 0f;
+    }
 
     public ArmCalmMotion(Transform bodyPointer) 
     {

@@ -6,6 +6,11 @@ public class ProcedureAnimation : MonoBehaviour
 {
     [SerializeField]
     private Transform _pointer;
+    public Transform Pointer 
+    {
+        get => _pointer;
+        protected set => _pointer = value;
+    }
 
     [SerializeField]
     private float _angleLimitMin;
