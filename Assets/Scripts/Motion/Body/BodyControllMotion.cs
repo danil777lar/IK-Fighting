@@ -48,10 +48,14 @@ public class BodyControllMotion : Motion
             {
                 _rb.velocity = new Vector2(_rb.velocity.x, 0f);
                 _rb.AddForce(new Vector2(0f, 10f), ForceMode2D.Impulse);
-                _frontLeg.PushMotion(new JumpLegMotion(_pointer.transform));
-                _backLeg.PushMotion(new JumpLegMotion(_pointerTransform));
-                _pointer.PushMotion( new JumpBodyMotion() );
             }
+        }
+
+        if (_pointerTransform.position.y > STAND_HEIGHT) 
+        {
+            _frontLeg.PushMotion(new JumpLegMotion(_pointer.transform));
+            _backLeg.PushMotion(new JumpLegMotion(_pointerTransform));
+            _pointer.PushMotion(new JumpBodyMotion());
         }
     }
 

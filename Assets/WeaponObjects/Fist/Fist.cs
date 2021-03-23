@@ -5,7 +5,7 @@ using UnityEngine;
 public class Fist : Weapon
 {
     private bool _isKilled = false;
-    private float _force = 10f;
+    private float _force = 5f;
     private int _hitNumber = 1;
     private Vector3 _startPosition;
 
@@ -30,7 +30,6 @@ public class Fist : Weapon
     {
         if (!_isKilled)
         {
-            Debug.Log("weapon hit");
             _isKilled = true;
             Destroy(gameObject);
         }

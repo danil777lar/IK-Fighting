@@ -38,9 +38,12 @@ public class StepMotion : Motion
     override public void UpdateMotion() 
     {
         if (_startTime != -1f) Animate();
-        else if (_pointerTransform.position.y != Y_POSITION) MoveToDefaultYPosition();
-        else if (_otherLegPointer.position.y <= Y_POSITION) CheckBodyPosition();
-        else MoveToDefaultXPosition();
+        else 
+        {
+            if (_pointerTransform.position.y != Y_POSITION) MoveToDefaultYPosition();
+            else MoveToDefaultXPosition();
+            if (_otherLegPointer.position.y <= Y_POSITION) CheckBodyPosition();
+        }
     }
 
     private void MoveToDefaultYPosition()
