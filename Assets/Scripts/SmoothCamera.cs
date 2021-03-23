@@ -14,7 +14,7 @@ public class SmoothCamera : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 targetPosition = _target.position - _positionOffset;
+        Vector3 targetPosition = new Vector3(_target.position.x - (_positionOffset.x * _target.localScale.x), _target.position.y - _positionOffset.y);
         targetPosition.z = transform.position.z;
         if (_positionSmooth != -1f) transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime/_positionSmooth);
         if (_rotationSmooth != -1f) transform.rotation = Quaternion.Lerp(transform.rotation, _target.rotation, Time.deltaTime / _rotationSmooth);

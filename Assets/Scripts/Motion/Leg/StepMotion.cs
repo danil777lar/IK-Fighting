@@ -38,13 +38,23 @@ public class StepMotion : Motion
     override public void UpdateMotion() 
     {
         if (_startTime != -1f) Animate();
-        else if (_pointerTransform.position.y != Y_POSITION) MoveToDefaultPosition();
+        else if (_pointerTransform.position.y != Y_POSITION) MoveToDefaultYPosition();
         else if (_otherLegPointer.position.y <= Y_POSITION) CheckBodyPosition();
+        else MoveToDefaultXPosition();
     }
 
-    private void MoveToDefaultPosition()
+    private void MoveToDefaultYPosition()
     {
         _pointerTransform.position = new Vector2(_pointerTransform.position.x, Y_POSITION);
+    }
+
+    private void MoveToDefaultXPosition() 
+    {
+        if (_bodyPointer.position.x - _pointerTransform.position.x > 3f) 
+            _pointerTransform.position = new Vector2(_bodyPointer.position.x - 2f, _pointerTransform.position.y);
+
+        if (_bodyPointer.position.x - _pointerTransform.position.x < -3f)
+            _pointerTransform.position = new Vector2(_bodyPointer.position.x + 2f, _pointerTransform.position.y);
     }
 
     private void Animate()

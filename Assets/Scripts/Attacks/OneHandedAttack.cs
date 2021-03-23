@@ -16,5 +16,5 @@ public abstract class OneHandedAttack : ScriptableObject
     }
 
     // abstract & virtual
-    public abstract Dictionary<int, Motion[]> GetMotion(AttackHolder attackHolder, Transform root, IControll controll, int hand);
+    public abstract Dictionary<int, Motion[]> GetMotion(AttackHolder attackHolder, Transform root, IControll controll, DirectionController directionController, int hand);
 }

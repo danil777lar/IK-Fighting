@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5011246828187245935}
   m_Layer: 8
   m_Name: end
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40,9 +40,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5011246828187753701}
   - component: {fileID: 5011246828187753702}
+  - component: {fileID: 1250260661}
+  - component: {fileID: 1250260662}
+  - component: {fileID: 1289198668588898157}
   m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +61,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5011246830105654577}
+  - {fileID: 5011246830206506794}
   - {fileID: 5011246829653098237}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -75,12 +78,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91a1c1ac24742e44287007cadf52db1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyPointer: {fileID: 5011246830206506788}
-  _frontArmPointer: {fileID: 5011246828271483036}
-  _backArmPointer: {fileID: 5011246830038982880}
-  _frontLegPointer: {fileID: 5011246828862559143}
-  _backLegPointer: {fileID: 5011246829301707339}
-  _defaultState: {fileID: 11400000, guid: 121be6b8e5059624586aa2baf877ee4d, type: 2}
+  _pointers:
+  - {fileID: 5011246830206506788}
+  - {fileID: 5011246828271483036}
+  - {fileID: 5011246830038982880}
+  - {fileID: 5011246828862559143}
+  - {fileID: 5011246829301707339}
+--- !u!114 &1250260661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011246828187753700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642e26b57910e10458addd2f299e4b3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _armRoot: {fileID: 5011246828643858661}
+  _frontHand: {fileID: 5011246828187245935}
+  _backHand: {fileID: 5011246829200243719}
+  _frontHandAttack: {fileID: 11400000, guid: 4287b5d4879355d44b2acb5c960981e2, type: 2}
+  _backHandAttack: {fileID: 11400000, guid: 4287b5d4879355d44b2acb5c960981e2, type: 2}
+--- !u!114 &1250260662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011246828187753700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 737fd32efc182144ca746a16274acb36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _armRoot: {fileID: 5011246828643858661}
+--- !u!114 &1289198668588898157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011246828187753700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b576a8a71513543b774adad343c53a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _otherController: {fileID: 0}
+  _body: {fileID: 0}
 --- !u!1 &5011246828271483106
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +141,7 @@ GameObject:
   - component: {fileID: 5011246828271483037}
   m_Layer: 8
   m_Name: FrontArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MotionName: 
 --- !u!50 &5011246828271483037
 Rigidbody2D:
   serializedVersion: 4
@@ -158,7 +206,7 @@ GameObject:
   - component: {fileID: 5011246828406576878}
   m_Layer: 8
   m_Name: FrontLeg
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,7 +257,7 @@ GameObject:
   - component: {fileID: 5011246828431018031}
   m_Layer: 8
   m_Name: down
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -316,7 +364,7 @@ GameObject:
   - component: {fileID: 5011246828643858662}
   m_Layer: 8
   m_Name: FrontArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -367,7 +415,7 @@ GameObject:
   - component: {fileID: 5011246828862559136}
   m_Layer: 8
   m_Name: FrontLeg
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -398,6 +446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MotionName: 
 --- !u!50 &5011246828862559136
 Rigidbody2D:
   serializedVersion: 4
@@ -432,7 +481,7 @@ GameObject:
   - component: {fileID: 5011246829023289877}
   m_Layer: 8
   m_Name: down
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -540,7 +589,7 @@ GameObject:
   - component: {fileID: 5011246829113343543}
   m_Layer: 8
   m_Name: down
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -623,7 +672,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.046094418, y: -0.6655462}
+  m_Offset: {x: -0.046094418, y: -0.5110937}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.4399512, y: 0.94369745}
@@ -634,7 +683,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6777258, y: 1.5}
+  m_Size: {x: 0.6777258, y: 1.191095}
   m_EdgeRadius: 0
 --- !u!1 &5011246829115124065
 GameObject:
@@ -647,7 +696,7 @@ GameObject:
   - component: {fileID: 5011246829115124066}
   m_Layer: 8
   m_Name: end
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -677,7 +726,7 @@ GameObject:
   - component: {fileID: 5011246829200243719}
   m_Layer: 8
   m_Name: end
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -709,7 +758,7 @@ GameObject:
   - component: {fileID: 5011246829301707332}
   m_Layer: 8
   m_Name: BackLeg
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -740,6 +789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MotionName: 
 --- !u!50 &5011246829301707332
 Rigidbody2D:
   serializedVersion: 4
@@ -772,7 +822,7 @@ GameObject:
   - component: {fileID: 5011246829345205223}
   m_Layer: 8
   m_Name: end
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -804,7 +854,7 @@ GameObject:
   - component: {fileID: 5011246829350941409}
   m_Layer: 8
   m_Name: top
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -911,7 +961,7 @@ GameObject:
   - component: {fileID: 5011246829653098237}
   m_Layer: 8
   m_Name: Pointers
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -946,7 +996,7 @@ GameObject:
   - component: {fileID: 5011246829654518925}
   m_Layer: 8
   m_Name: BackArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -997,7 +1047,7 @@ GameObject:
   - component: {fileID: 5011246829810623956}
   m_Layer: 8
   m_Name: top
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1106,7 +1156,7 @@ GameObject:
   - component: {fileID: 5011246829902285125}
   m_Layer: 8
   m_Name: top
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1214,7 +1264,7 @@ GameObject:
   - component: {fileID: 5011246829958420119}
   m_Layer: 8
   m_Name: BackLeg
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1265,7 +1315,7 @@ GameObject:
   - component: {fileID: 5011246830038982881}
   m_Layer: 8
   m_Name: BackArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1296,6 +1346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MotionName: 
 --- !u!50 &5011246830038982881
 Rigidbody2D:
   serializedVersion: 4
@@ -1317,37 +1368,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &5011246830105654576
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5011246830105654577}
-  m_Layer: 8
-  m_Name: BodyParts
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5011246830105654577
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5011246830105654576}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 5011246830206506794}
-  m_Father: {fileID: 5011246828187753701}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5011246830119189828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,7 +1381,7 @@ GameObject:
   - component: {fileID: 5011246830119189831}
   m_Layer: 8
   m_Name: top
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1470,9 +1490,10 @@ GameObject:
   - component: {fileID: 5011246830206506789}
   - component: {fileID: 5011246830206506788}
   - component: {fileID: 5011246830206506791}
-  m_Layer: 8
+  - component: {fileID: 591517570}
+  m_Layer: 10
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1492,7 +1513,7 @@ Transform:
   - {fileID: 5011246829654518924}
   - {fileID: 5011246828406576877}
   - {fileID: 5011246829958420118}
-  m_Father: {fileID: 5011246830105654577}
+  m_Father: {fileID: 5011246828187753701}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5011246830206506793
@@ -1584,6 +1605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f54c25bb0bc0f418df2a37d316bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MotionName: 
 --- !u!50 &5011246830206506791
 Rigidbody2D:
   serializedVersion: 4
@@ -1599,12 +1621,24 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &591517570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011246830206506792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9624d520898b80041b9a7918097d4bde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5011246830213394615
 GameObject:
   m_ObjectHideFlags: 0
@@ -1618,7 +1652,7 @@ GameObject:
   - component: {fileID: 5011246830213394610}
   m_Layer: 8
   m_Name: down
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1701,7 +1735,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0378747, y: -0.6655462}
+  m_Offset: {x: -0.0378747, y: -0.5110938}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.4399512, y: 0.94369745}
@@ -1712,5 +1746,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6941652, y: 1.5}
+  m_Size: {x: 0.6941652, y: 1.1910952}
   m_EdgeRadius: 0

@@ -4,38 +4,50 @@ using UnityEngine;
 
 public class EnemyBotControll : MonoBehaviour, IControll
 {
+    [SerializeField] private Transform _armRoot;
+
+    private DirectionController _directionController;
+
+    public void Start() => _directionController = GetComponent<DirectionController>();
+
     public bool GetAttackButtonDown(int button)
     {
-        return false;
+        return Input.GetMouseButtonDown(button);
     }
 
     public bool GetAttackButton(int button)
     {
-        return false;
+        return Input.GetMouseButton(button);
     }
 
     public float GetAttackButtonAngle(int button)
     {
-        return 0f;
+        if (Input.GetMouseButton(button))
+        {
+            Vector3 mousePosition = Input.mousePosition;
+            mousePosition.z = 10f;
+            return Vector2.SignedAngle(Camera.main.ScreenToWorldPoint(mousePosition) - _armRoot.position, Vector2.right);
+        }
+        else return -1f;
     }
 
     public bool GetJump()
     {
-        return false;
-    }
-
-    public bool GetMoveDown()
-    {
-        return false;
+        return Input.GetKey("up");
     }
 
     public bool GetMoveLeft()
     {
-        return false;
+        return Input.GetKey("left");
     }
 
     public bool GetMoveRight()
     {
-        return false;
+        return Input.GetKey("right");
+    }
+
+    public bool GetMoveDown()
+    {
+        return Input.GetKey("down");
     }
 }

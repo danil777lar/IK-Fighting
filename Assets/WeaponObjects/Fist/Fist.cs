@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Fist : Weapon
 {
+    private bool _isKilled = false;
     private float _force = 10f;
     private int _hitNumber = 1;
     private Vector3 _startPosition;
@@ -21,19 +22,33 @@ public class Fist : Weapon
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Weapon") KillWeapon();
         if (collision.gameObject.tag == _targetTag) HitEnemy(collision.gameObject);
+    }
+
+    private void KillWeapon()
+    {
+        if (!_isKilled)
+        {
+            Debug.Log("weapon hit");
+            _isKilled = true;
+            Destroy(gameObject);
+        }
     }
 
     private void HitEnemy(GameObject hittedObject)
     {
-        KinematicsPointer pointer = hittedObject.GetComponent<KinematicsPointer>();
-        if (pointer == null) 
-            pointer = hittedObject.GetComponentInParent<ProcedureAnimation>().Pointer.gameObject.GetComponent<KinematicsPointer>();
+        if (!_isKilled)
+        {
+            KinematicsPointer pointer = hittedObject.GetComponent<KinematicsPointer>();
+            if (pointer == null)
+                pointer = hittedObject.GetComponentInParent<ProcedureAnimation>().Pointer.gameObject.GetComponent<KinematicsPointer>();
 
-        pointer.PushMotion( new AttackHitMotion(GetForce()/_hitNumber));
+            pointer.PushMotion(new AttackHitMotion(GetForce() / _hitNumber));
 
-        _hitNumber++;
-        //Destroy(gameObject);
+            _hitNumber++;
+            //Destroy(gameObject);
+        }
     }
 
     private Vector2 GetForce()

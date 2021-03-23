@@ -21,13 +21,17 @@ public class ProcedureAnimation : MonoBehaviour
     [SerializeField]
     private bool _isSpriteReverse;
 
+    private DirectionController _directionController;
     private Transform[] _segments;
     private Dictionary<Transform, float> _segmentsLenght;
     private SpriteRenderer[] _spriteRenderers;
+    
 
 
     private void Start()
     {
+        _directionController = GetComponentInParent<DirectionController>();
+
         _segments = GetComponentsInChildren<Transform>();
         _spriteRenderers = new SpriteRenderer[]{_segments[1].GetComponent<SpriteRenderer>(), _segments[2].GetComponent<SpriteRenderer>()};
 
@@ -79,9 +83,12 @@ public class ProcedureAnimation : MonoBehaviour
         Vector3 topDir = _segments[1].position - _segments[2].position;
         Vector3 downDir = _segments[2].position - _segments[3].position;
 
+        float limitMin = _directionController.Direction == 1 ? _angleLimitMin : _angleLimitMax * -1f;
+        float limitMax = _directionController.Direction == 1 ? _angleLimitMax : _angleLimitMin * -1f;
+
         bool flipSprite = false;
         float angle = Vector2.SignedAngle(topDir, downDir);
-        if (angle < _angleLimitMin || angle > _angleLimitMax)
+        if (angle < limitMin || angle > limitMax)
         {
             flipSprite = _isSpriteReverse;
             if (!_isSpriteReverse)

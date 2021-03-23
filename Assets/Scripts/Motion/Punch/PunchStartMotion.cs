@@ -8,17 +8,19 @@ public class PunchStartMotion : Motion
 
     private Transform _armRoot;
     private IControll _controllInterface;
+    private DirectionController _directionController;
 
     private int _hand;
 
     private float _startTime = -1f;
     private Vector2 _startPosition;
 
-    public PunchStartMotion(Transform root, IControll controll, int hand) 
+    public PunchStartMotion(Transform root, IControll controll, DirectionController directionController, int hand) 
     {
         _armRoot = root;
         _controllInterface = controll;
         _hand = hand;
+        _directionController = directionController;
     }
 
     public override void Init(KinematicsPointer pointer)
@@ -41,7 +43,7 @@ public class PunchStartMotion : Motion
                 float dx = Mathf.Sin((90f - angle) * Mathf.Deg2Rad) * 3f;
 
                 Vector2 targetPosition = _armRoot.position - new Vector3(dx, dy);
-                targetPosition.x -= 2f;
+                targetPosition.x -= 2f * _directionController.Direction;
 
                 _pointerTransform.position = Vector2.Lerp(_startPosition, targetPosition, t);
             }

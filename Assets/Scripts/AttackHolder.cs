@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[RequireComponent(typeof(DirectionController))]
 [RequireComponent(typeof(PointerFiller))]
 [RequireComponent(typeof(IControll))]
 
@@ -19,6 +19,7 @@ public class AttackHolder : MonoBehaviour
 
     private IControll _controllInterface;
     private PointerFiller _pointerFiller;
+    private DirectionController _directionController;
 
     // ONE HANDED ATTACK VALUES
     private Transform _currentHand;
@@ -30,6 +31,7 @@ public class AttackHolder : MonoBehaviour
     {
         _pointerFiller = GetComponent<PointerFiller>();
         _controllInterface = GetComponent<IControll>();
+        _directionController = GetComponent<DirectionController>();
     }
 
     void Update()
@@ -65,7 +67,7 @@ public class AttackHolder : MonoBehaviour
             if (currentAttack != null)
             {         
                 _weapon = currentAttack.GetWeaponObject();
-                _pointerFiller.FillPointers(currentAttack.GetMotion(this, _armRoot, _controllInterface, hand));
+                _pointerFiller.FillPointers(currentAttack.GetMotion(this, _armRoot, _controllInterface, _directionController, hand));
                 _isAttacking = true;
             }
         }
@@ -73,8 +75,11 @@ public class AttackHolder : MonoBehaviour
 
     public void AttackStarted()
     {
-        _weapon = Instantiate(_weapon);
-        _weapon.GetComponent<Weapon>().Init(_currentHand);
+        if (_weapon != null) 
+        {
+            _weapon = Instantiate(_weapon);
+            _weapon.GetComponent<Weapon>().Init(_currentHand);
+        }
     }
 
     public void AttackFinished() 
