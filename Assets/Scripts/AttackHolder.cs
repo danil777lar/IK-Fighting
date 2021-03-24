@@ -25,6 +25,7 @@ public class AttackHolder : MonoBehaviour
 
     // ONE HANDED ATTACK VALUES
     private Transform _currentHand;
+    private OneHandedAttack _currentAttack;
     private GameObject _weapon;
 
     private bool _isAttacking = false;
@@ -52,25 +53,24 @@ public class AttackHolder : MonoBehaviour
     {
         if (_controllInterface.GetAttackButtonDown(hand))
         {
-            OneHandedAttack currentAttack;
             switch (hand)
             {
                 case 0:
                     _currentHand = _frontHand;
-                    currentAttack = _frontHandAttack;
+                    _currentAttack = _frontHandAttack;
                     break;
                 case 1:
                     _currentHand = _backHand;
-                    currentAttack = _backHandAttack;
+                    _currentAttack = _backHandAttack;
                     break;
                 default: return;
             }
 
-            if (currentAttack != null)
+            if (_currentAttack != null)
             {         
-                _weapon = currentAttack.GetWeaponObject();
-                _pointerFiller.FillPointers(currentAttack.GetMotion(this, _armRoot, _controllInterface, _directionController, hand));
-                if (_attackForceIndicator != null) _attackForceIndicator._progressInfo = currentAttack.GetStartMoution();
+                _weapon = _currentAttack.GetWeaponObject();
+                _pointerFiller.FillPointers(_currentAttack.GetMotion(this, _armRoot, _controllInterface, _directionController, hand));
+                if (_attackForceIndicator != null) _attackForceIndicator._progressInfo = _currentAttack.GetStartMotion();
                 _isAttacking = true;
             }
         }
@@ -81,7 +81,7 @@ public class AttackHolder : MonoBehaviour
         if (_weapon != null) 
         {
             _weapon = Instantiate(_weapon);
-            _weapon.GetComponent<Weapon>().Init(_currentHand);
+            _weapon.GetComponent<Weapon>().Init(_currentHand, _currentAttack.GetStartMotion().GetProgress());
         }
         if (_attackForceIndicator != null) _attackForceIndicator._progressInfo = null;
     }
@@ -91,6 +91,7 @@ public class AttackHolder : MonoBehaviour
         if (_weapon != null) _weapon.GetComponent<Weapon>().MotionFinished();
         _weapon = null;
         _currentHand = null;
+        _currentAttack = null;
         _isAttacking = false;
     }
 

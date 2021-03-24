@@ -17,6 +17,6 @@ public class SimpleAttack : OneHandedAttack
         return dict;
     }
 
-    public override IProgressInformation GetStartMoution() => _motionList[1] as IProgressInformation;
+    public override IProgressInformation GetStartMotion() => _motionList[1] as IProgressInformation;
 
 }

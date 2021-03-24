@@ -252,8 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffddfe35adae0b3428906bf5cb770e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startColor: {r: 0.709, g: 0.4568452, b: 0.4568452, a: 1}
-  _finishColor: {r: 0.9019608, g: 0.93333334, b: 0.6117647, a: 1}
+  _startColor: {r: 0.709, g: 0.4568452, b: 0.4568452, a: 0.5019608}
+  _finishColor: {r: 0.9019608, g: 0.93333334, b: 0.6117647, a: 0.5019608}
 --- !u!1 &1452555588
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.482, g: 0.29865098, b: 0.29865098, a: 1}
+  m_Color: {r: 0.482, g: 0.29865098, b: 0.29865098, a: 0.5019608}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -445,6 +445,7 @@ GameObject:
   - component: {fileID: 1250260661}
   - component: {fileID: 1250260662}
   - component: {fileID: 1289198668588898157}
+  - component: {fileID: 1694237333725838688}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -532,6 +533,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _otherController: {fileID: 0}
   _body: {fileID: 5011246830206506794}
+--- !u!114 &1694237333725838688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011246828187753700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 405bf7e967ea62346ad421509282a986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageText: {fileID: 1382367197151720305, guid: f1e6716ecf894e64391b68b62d493ab7,
+    type: 3}
+  _canvas: {fileID: 377081536}
+  _health: 100
 --- !u!1 &5011246828271483106
 GameObject:
   m_ObjectHideFlags: 0

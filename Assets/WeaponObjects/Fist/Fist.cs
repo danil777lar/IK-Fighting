@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Fist : Weapon
 {
-    private bool _isKilled = false;
     private float _force = 5f;
+
+    private bool _isKilled = false;
     private int _hitNumber = 1;
     private Vector3 _startPosition;
 
-    public override void Init(Transform hand)
+    public override void Init(Transform hand, float attackProgress)
     {
-        base.Init(hand);
+        base.Init(hand, attackProgress);
         _startPosition = transform.position;
     }
 
@@ -43,10 +44,12 @@ public class Fist : Weapon
             if (pointer == null)
                 pointer = hittedObject.GetComponentInParent<ProcedureAnimation>().Pointer.gameObject.GetComponent<KinematicsPointer>();
 
-            pointer.PushMotion(new AttackHitMotion(GetForce() / _hitNumber));
+            pointer.PushMotion( new AttackHitMotion( GetForce() ) );
+
+            int damageScale = hittedObject.layer == 10 ? 1 : 3;
+            hittedObject.GetComponentInParent<HealthManager>().SetDamage(GetDamage() / damageScale, (int)_force);
 
             _hitNumber++;
-            //Destroy(gameObject);
         }
     }
 
@@ -56,6 +59,8 @@ public class Fist : Weapon
         float dx = Mathf.Cos(a*Mathf.Deg2Rad);
         float dy = Mathf.Sin(a*Mathf.Deg2Rad);
 
-        return new Vector2(_force*dx, _force*dy);
+        return (new Vector2(_force*dx, _force*dy) * _attackProgress) / _hitNumber;
     }
+
+    private int GetDamage() => (int)(_force * _attackProgress / _hitNumber);
 }
