@@ -11,10 +11,12 @@ public class SimpleAttack : OneHandedAttack
     {
         Dictionary<int, Motion[]> dict = new Dictionary<int, Motion[]>();
 
-        Motion[] motionList = new Motion[] { new SimplePunchMotion(root, attackHolder), new PunchStartMotion(root, controll, directionController,hand) };
+        _motionList = new Motion[] { new SimplePunchMotion(root, attackHolder), new PunchStartMotion(root, controll, directionController,hand) };
 
-        dict.Add( GetPointerId(hand),  motionList);
+        dict.Add( GetPointerId(hand),  _motionList);
         return dict;
     }
+
+    public override IProgressInformation GetStartMoution() => _motionList[1] as IProgressInformation;
 
 }

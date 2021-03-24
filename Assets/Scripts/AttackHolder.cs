@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class AttackHolder : MonoBehaviour
 {
+    [SerializeField] private AttackForceIndicator _attackForceIndicator;
+
     [SerializeField] private Transform _armRoot;
 
     [SerializeField] private Transform _frontHand;
@@ -68,6 +70,7 @@ public class AttackHolder : MonoBehaviour
             {         
                 _weapon = currentAttack.GetWeaponObject();
                 _pointerFiller.FillPointers(currentAttack.GetMotion(this, _armRoot, _controllInterface, _directionController, hand));
+                if (_attackForceIndicator != null) _attackForceIndicator._progressInfo = currentAttack.GetStartMoution();
                 _isAttacking = true;
             }
         }
@@ -80,6 +83,7 @@ public class AttackHolder : MonoBehaviour
             _weapon = Instantiate(_weapon);
             _weapon.GetComponent<Weapon>().Init(_currentHand);
         }
+        if (_attackForceIndicator != null) _attackForceIndicator._progressInfo = null;
     }
 
     public void AttackFinished() 

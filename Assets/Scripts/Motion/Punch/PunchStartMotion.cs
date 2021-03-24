@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PunchStartMotion : Motion
+public class PunchStartMotion : Motion, IProgressInformation
 {
     const float DURATION = 1f;
 
@@ -55,4 +55,6 @@ public class PunchStartMotion : Motion
     {
         IsFinished = true;
     }
+
+    public float GetProgress() => (Time.time - _startTime) / DURATION;
 }

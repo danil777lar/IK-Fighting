@@ -5,8 +5,9 @@ using UnityEngine;
 public abstract class OneHandedAttack : ScriptableObject
 {
     [SerializeField] protected GameObject _weapon;
-
     public GameObject GetWeaponObject() => _weapon;
+
+    protected Motion[] _motionList;
 
     protected int GetPointerId(int hand)
     {
@@ -17,4 +18,6 @@ public abstract class OneHandedAttack : ScriptableObject
 
     // abstract & virtual
     public abstract Dictionary<int, Motion[]> GetMotion(AttackHolder attackHolder, Transform root, IControll controll, DirectionController directionController, int hand);
+
+    public abstract IProgressInformation GetStartMoution();
 }
