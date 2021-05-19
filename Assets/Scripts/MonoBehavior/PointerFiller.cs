@@ -40,4 +40,11 @@ public class PointerFiller : MonoBehaviour
         Pointer pointer = pointers.Find((p) => p.type == pt);
         pointer.Motion = MotionBuilder.GetTween(pointer.pointer, motion);
     }
+
+    public Rigidbody2D GetPointer(KinematicsPointerType pt) =>
+        pointers.Find((p) => p.type == pt).pointer;
+
+    public Tween GetTween(Rigidbody2D rb) =>
+        pointers.Find((p) => p.pointer == rb).Motion;
+
 }
