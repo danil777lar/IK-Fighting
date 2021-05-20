@@ -7,6 +7,13 @@ public class PhysicsMachine : MonoBehaviour
 {
     enum States { Stay, Fall }
 
+    public class PointerOffset 
+    {
+        public Vector2 bodyOffset = Vector2.zero;
+        public float transitionSpeed = 1f;
+        public float noiseScale = 0f;
+    }
+
     [Header("Animation")]
     [SerializeField] private float animationSpeed = 1f;
     [SerializeField] private float frequencyScale = 1f;
@@ -16,8 +23,8 @@ public class PhysicsMachine : MonoBehaviour
     [SerializeField] private float walkSpeed = 3f;
     [SerializeField] private float jumpForce = 15f;
 
-    [Header("Arms")]
-    [SerializeField] private Vector2 armsOffset;
+    [HideInInspector]
+    public Dictionary<Rigidbody2D, PointerOffset> offsets;
 
     private int randSeed;
     private PointerFiller filler;
@@ -42,6 +49,14 @@ public class PhysicsMachine : MonoBehaviour
         backArmRb = filler.GetPointer(KinematicsPointerType.BackArm);
         frontLegRb = filler.GetPointer(KinematicsPointerType.FrontLeg);
         backLegRb = filler.GetPointer(KinematicsPointerType.BackLeg);
+
+        offsets = new Dictionary<Rigidbody2D, PointerOffset> 
+        { 
+            { frontArmRb, new PointerOffset() },
+            { backArmRb, new PointerOffset() },
+            { frontLegRb, new PointerOffset() },
+            { backLegRb, new PointerOffset() },
+        };
     }
 
     private void FixedUpdate()
@@ -63,6 +78,7 @@ public class PhysicsMachine : MonoBehaviour
         if (filler.GetTween(bodyRb) == null)
         {
             bodyRb.gravityScale = 0f;
+            bodyRb.drag = 3f;
 
             RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
             if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight)
@@ -99,6 +115,24 @@ public class PhysicsMachine : MonoBehaviour
 
     private void StayLegs() 
     {
+        if (filler.GetTween(frontLegRb) == null && filler.GetTween(backLegRb) == null)
+        {
+
+            if (frontLegRb.position.x == backLegRb.position.x)
+                filler.PushMotion(frontLegRb, PointerMotion.LegStep);
+
+            Rigidbody2D leftLeg = frontLegRb.position.x < backLegRb.position.x ? frontLegRb : backLegRb;
+            Rigidbody2D rightLeg = frontLegRb.position.x < backLegRb.position.x ? backLegRb : frontLegRb;
+
+            if (bodyRb.position.x < leftLeg.position.x)
+                filler.PushMotion(rightLeg, PointerMotion.LegStep);
+            else if (bodyRb.position.x > rightLeg.position.x)
+                filler.PushMotion(leftLeg, PointerMotion.LegStep);
+            else if (Mathf.Abs(frontLegRb.position.x - bodyRb.position.x) > DataGameMain.Default.personStepLenght)
+                filler.PushMotion(frontLegRb, PointerMotion.LegToNormalDistance);
+            else if (Mathf.Abs(backLegRb.position.x - bodyRb.position.x) > DataGameMain.Default.personStepLenght)
+                filler.PushMotion(backLegRb, PointerMotion.LegToNormalDistance);
+        }
     }
 
     private void StayArms() 
@@ -108,10 +142,10 @@ public class PhysicsMachine : MonoBehaviour
         {
             if (filler.GetTween(rb) == null)
             {
-                Vector2 position = bodyRb.position + armsOffset;
-                position.x += Mathf.PerlinNoise(Time.time, randSeed + rbs.IndexOf(rb)) - 0.5f;
-                position.x += Mathf.PerlinNoise(randSeed + rbs.IndexOf(rb), Time.time) - 0.5f;
-                rb.position = Vector2.Lerp(rb.position, position, Time.fixedDeltaTime);
+                Vector2 position = bodyRb.position + offsets[rb].bodyOffset;
+                position.x += (Mathf.PerlinNoise(Time.time, randSeed + rbs.IndexOf(rb)) - 0.5f) * offsets[rb].noiseScale;
+                position.y += (Mathf.PerlinNoise(randSeed + rbs.IndexOf(rb), Time.time) - 0.5f) *offsets[rb].noiseScale;
+                rb.position = Vector2.Lerp(rb.position, position, Time.fixedDeltaTime * offsets[rb].transitionSpeed);
             }
         }
     }
@@ -121,6 +155,7 @@ public class PhysicsMachine : MonoBehaviour
     private void FallUpdate() 
     {
         bodyRb.gravityScale = 1f;
+        bodyRb.drag = 0f;
 
         RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
         if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight / 2f)

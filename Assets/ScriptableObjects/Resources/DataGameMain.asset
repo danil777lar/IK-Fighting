@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1c3b31369aa5f41b2c25c448c9de46, type: 3}
   m_Name: DataGameMain
   m_EditorClassIdentifier: 
-  personStandHeight: 3
+  personStandHeight: 2.5
+  personStepLenght: 1.5

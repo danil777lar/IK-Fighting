@@ -13,6 +13,7 @@ public class DataGameMain : ScriptableObject
     #endregion
 
     public float personStandHeight = 2f;
+    public float personStepLenght = 2f;
 
     public void Init() 
     {

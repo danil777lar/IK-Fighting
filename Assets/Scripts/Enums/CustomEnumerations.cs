@@ -6,6 +6,8 @@
     {
         BodyCalm,
         ArmCalm,
-        LegCalm
+        LegCalm,
+        LegStep,
+        LegToNormalDistance
     }
 }

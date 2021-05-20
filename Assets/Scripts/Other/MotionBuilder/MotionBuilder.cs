@@ -10,7 +10,9 @@ public static partial class MotionBuilder
     private static Dictionary<PointerMotion, MotionMethod> motionMethods = new Dictionary<PointerMotion, MotionMethod>() 
     {
         {PointerMotion.ArmCalm, ArmCalm},
-        {PointerMotion.LegCalm, LegCalm}
+        {PointerMotion.LegCalm, LegCalm},
+        {PointerMotion.LegStep, LegStep},
+        {PointerMotion.LegToNormalDistance, LegToNormalDistance}
     };
 
     public static Tween GetTween(Rigidbody2D pointer, PointerMotion motion) =>

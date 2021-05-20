@@ -509,8 +509,7 @@ MonoBehaviour:
   frequencyScale: 0.02
   frequencySpeed: 0.5
   walkSpeed: 3
-  jumpForce: 15
-  armsOffset: {x: 1.5, y: 1}
+  jumpForce: 8
 --- !u!114 &1289198668588898157
 MonoBehaviour:
   m_ObjectHideFlags: 0
