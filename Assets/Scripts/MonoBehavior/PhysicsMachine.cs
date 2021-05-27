@@ -9,6 +9,13 @@ public class PhysicsMachine : MonoBehaviour
 
     public class PointerOffset 
     {
+        public PointerOffset(){}
+        public PointerOffset(Vector2 offset, float noise) 
+        {
+            bodyOffset = offset;
+            noiseScale = noise;
+        }
+
         public Vector2 bodyOffset = Vector2.zero;
         public float transitionSpeed = 1f;
         public float noiseScale = 0f;
@@ -28,6 +35,7 @@ public class PhysicsMachine : MonoBehaviour
 
     private int randSeed;
     private PointerFiller filler;
+    private DirectionController direction;
     private IControll controll;
     private States _currentState = States.Stay;
 
@@ -41,6 +49,7 @@ public class PhysicsMachine : MonoBehaviour
     {
         controll = GetComponent<IControll>();
         filler = GetComponent<PointerFiller>();
+        direction = GetComponent<DirectionController>();
 
         randSeed = UnityEngine.Random.Range(0, 100);
 
@@ -52,8 +61,8 @@ public class PhysicsMachine : MonoBehaviour
 
         offsets = new Dictionary<Rigidbody2D, PointerOffset> 
         { 
-            { frontArmRb, new PointerOffset() },
-            { backArmRb, new PointerOffset() },
+            { frontArmRb, new PointerOffset(new Vector2(1f, 2f), 2f)},
+            { backArmRb, new PointerOffset(new Vector2(1f, 2f), 2f)},
             { frontLegRb, new PointerOffset() },
             { backLegRb, new PointerOffset() },
         };
@@ -142,10 +151,12 @@ public class PhysicsMachine : MonoBehaviour
         {
             if (filler.GetTween(rb) == null)
             {
-                Vector2 position = bodyRb.position + offsets[rb].bodyOffset;
+                Vector2 offset = offsets[rb].bodyOffset;
+                offset.x *= direction.Direction;
+                Vector2 position = bodyRb.position + offset;
                 position.x += (Mathf.PerlinNoise(Time.time, randSeed + rbs.IndexOf(rb)) - 0.5f) * offsets[rb].noiseScale;
-                position.y += (Mathf.PerlinNoise(randSeed + rbs.IndexOf(rb), Time.time) - 0.5f) *offsets[rb].noiseScale;
-                rb.position = Vector2.Lerp(rb.position, position, Time.fixedDeltaTime * offsets[rb].transitionSpeed);
+                position.y += (Mathf.PerlinNoise(randSeed + rbs.IndexOf(rb), Time.time) - 0.5f) * offsets[rb].noiseScale;
+                rb.position = Vector2.Lerp(rb.position, position, Time.fixedDeltaTime * offsets[rb].transitionSpeed * (bodyRb.velocity.x + 1));
             }
         }
     }
