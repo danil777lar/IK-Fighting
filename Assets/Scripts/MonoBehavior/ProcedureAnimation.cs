@@ -10,7 +10,7 @@ public class ProcedureAnimation : MonoBehaviour
     [SerializeField] private float _angleLimitMax;
 
     private DirectionController _directionController;
-    private Transform[] _segments;
+    private List<Transform> _segments;
     private Dictionary<Transform, float> _segmentsLenght;
     private SpriteRenderer[] _spriteRenderers;
 
@@ -23,13 +23,7 @@ public class ProcedureAnimation : MonoBehaviour
     private void Start()
     {
         _directionController = GetComponentInParent<DirectionController>();
-
-        _segments = GetComponentsInChildren<Transform>();
-        _spriteRenderers = new SpriteRenderer[]{_segments[1].GetComponent<SpriteRenderer>(), _segments[2].GetComponent<SpriteRenderer>()};
-
-        _segmentsLenght = new Dictionary<Transform, float>();
-        for (int i = 0; i < _segments.Length - 1; i++) 
-            _segmentsLenght.Add(_segments[i], Vector2.Distance(_segments[i].position, _segments[i+1].position));
+        CalculateSegments();
     }
 
     private void FixedUpdate()
@@ -41,14 +35,28 @@ public class ProcedureAnimation : MonoBehaviour
         MoveToRoot();
     }
 
+    public void CalculateSegments() 
+    {
+        _segments = new List<Transform>();
+        _segments.Add(transform);
+        foreach (Transform t in transform)
+            _segments.Add(t);
+
+        _spriteRenderers = new SpriteRenderer[] { _segments[1].GetComponent<SpriteRenderer>(), _segments[2].GetComponent<SpriteRenderer>() };
+
+        _segmentsLenght = new Dictionary<Transform, float>();
+        for (int i = 0; i < _segments.Count - 1; i++)
+            _segmentsLenght.Add(_segments[i], Vector2.Distance(_segments[i].position, _segments[i + 1].position));
+    }
+
     private void RotateAndMove()
     {
-        for (int i = _segments.Length - 1; i >= 1; i--)
+        for (int i = _segments.Count - 1; i >= 1; i--)
         {
             Transform target = GetTarget(i);
             Transform segment = _segments[i];
 
-            if (i == _segments.Length - 1) segment.position = target.position;
+            if (i == _segments.Count - 1) segment.position = target.position;
             else
             {
                 Vector2 direction = target.position - segment.position;
@@ -92,13 +100,13 @@ public class ProcedureAnimation : MonoBehaviour
     {
         //MOVE TO ROOT
         Vector3 offset = _segments[1].localPosition;
-        for (int i = 1; i < _segments.Length; i++)
+        for (int i = 1; i < _segments.Count; i++)
             _segments[i].localPosition -= offset;
     }
 
     private Transform GetTarget(int i)
     {
-        if (i == _segments.Length - 1) return _pointer;
+        if (i == _segments.Count - 1) return _pointer;
         else return _segments[i + 1];
     }
 }

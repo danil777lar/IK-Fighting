@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 1289198668588898157}
   - component: {fileID: 1250260662}
   - component: {fileID: 1694237333725838688}
+  - component: {fileID: 325036670832992739}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -553,6 +554,23 @@ MonoBehaviour:
     type: 3}
   _canvas: {fileID: 377081536}
   _health: 100
+--- !u!114 &325036670832992739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011246828187753700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76954165dd9f5714e82202eb00a013fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 219905331661297804, guid: b4e00226be912c04f9486399f169b715, type: 3}
+  - {fileID: 5434823695637852710, guid: c51e45a3f73fe994092827e0d02ef54a, type: 3}
+  _arm: {fileID: 5011246828643858662}
+  _pointer: {fileID: 5011246828271483037}
 --- !u!1 &5011246828271483106
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,7 +953,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 4
   m_Sprite: {fileID: -82757199298946268, guid: d833722fc7ee11440b3540c3d677852d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1807,7 +1825,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 8745284039982918138, guid: d833722fc7ee11440b3540c3d677852d,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
