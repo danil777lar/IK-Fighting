@@ -107,6 +107,9 @@ public class PhysicsMachine : MonoBehaviour
 
                 bodyRb.position = position;
 
+                float targetRotation = (bodyRb.velocity.x / walkSpeed) * -45f;
+                bodyRb.rotation = Mathf.Lerp(bodyRb.rotation, targetRotation, Time.fixedDeltaTime * animationSpeed);
+
                 if (controll.GetJump())
                 {
                     bodyRb.AddForce(Vector2.up * jumpForce * bodyRb.mass, ForceMode2D.Impulse);
