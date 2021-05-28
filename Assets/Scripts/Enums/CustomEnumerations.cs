@@ -4,8 +4,10 @@
 
     public enum PointerMotion 
     {
+        None,
         BodyCalm,
         ArmCalm,
+        ArmPunch,
         LegCalm,
         LegStep,
         LegToNormalDistance

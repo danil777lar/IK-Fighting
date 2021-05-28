@@ -28,6 +28,9 @@ public class PointerFiller : MonoBehaviour
             }
         }
     }
+
+    public delegate void OnMotionComplete();
+
     public List<Pointer> pointers = new List<Pointer>(); 
 
     private IControll _controllInterface;
@@ -37,16 +40,18 @@ public class PointerFiller : MonoBehaviour
         _controllInterface = GetComponent<IControll>();
     }
 
-    public void PushMotion(KinematicsPointerType pt, PointerMotion motion) 
+    public void PushMotion(KinematicsPointerType pt, PointerMotion motion, OnMotionComplete onMotionComplete = null) 
     {
         Pointer pointer = pointers.Find((p) => p.type == pt);
         if (pointer != null) pointer.Motion = MotionBuilder.GetTween(pointer.pointer, motion);
+        if (onMotionComplete != null) pointer.Motion.onComplete += () => onMotionComplete.Invoke();
     }
 
-    public void PushMotion(Rigidbody2D rb, PointerMotion motion)
+    public void PushMotion(Rigidbody2D rb, PointerMotion motion, OnMotionComplete onMotionComplete = null)
     {
         Pointer pointer = pointers.Find((p) => p.pointer == rb);
         if (pointer != null) pointer.Motion = MotionBuilder.GetTween(pointer.pointer, motion);
+        if (onMotionComplete != null) pointer.Motion.onComplete += () => onMotionComplete.Invoke();
     }
 
     public Rigidbody2D GetPointer(KinematicsPointerType pt) =>

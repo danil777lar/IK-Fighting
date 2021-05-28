@@ -444,9 +444,9 @@ GameObject:
   - component: {fileID: 5011246828187753702}
   - component: {fileID: 7554531354368039769}
   - component: {fileID: 1289198668588898157}
+  - component: {fileID: 325036670832992739}
   - component: {fileID: 1250260662}
   - component: {fileID: 1694237333725838688}
-  - component: {fileID: 325036670832992739}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -511,6 +511,7 @@ MonoBehaviour:
   frequencySpeed: 0.5
   walkSpeed: 3
   jumpForce: 8
+  armRoot: {fileID: 5011246828643858661}
 --- !u!114 &1289198668588898157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,6 +526,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _otherController: {fileID: 0}
   _body: {fileID: 5011246830206506794}
+--- !u!114 &325036670832992739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011246828187753700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76954165dd9f5714e82202eb00a013fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 5434823695637852710, guid: c51e45a3f73fe994092827e0d02ef54a, type: 3}
+  - {fileID: 219905331661297804, guid: b4e00226be912c04f9486399f169b715, type: 3}
+  _arm: {fileID: 5011246828643858662}
+  _pointer: {fileID: 5011246828271483037}
 --- !u!114 &1250260662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,23 +572,6 @@ MonoBehaviour:
     type: 3}
   _canvas: {fileID: 377081536}
   _health: 100
---- !u!114 &325036670832992739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5011246828187753700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76954165dd9f5714e82202eb00a013fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapons:
-  - {fileID: 219905331661297804, guid: b4e00226be912c04f9486399f169b715, type: 3}
-  - {fileID: 5434823695637852710, guid: c51e45a3f73fe994092827e0d02ef54a, type: 3}
-  _arm: {fileID: 5011246828643858662}
-  _pointer: {fileID: 5011246828271483037}
 --- !u!1 &5011246828271483106
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,7 +766,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.017514467, y: -0.60424566}
@@ -975,7 +976,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.017514467, y: -0.60424566}
@@ -1084,7 +1085,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.046094418, y: -0.5110937}
@@ -1335,7 +1336,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.008757591, y: -0.68306017}
@@ -1528,7 +1529,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.008757591, y: -0.68306017}
@@ -1637,7 +1638,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.008757114, y: -0.41158772}
@@ -1848,7 +1849,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.008757114, y: -0.41158772}
@@ -1962,7 +1963,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.05753815, y: 1.2260051}
@@ -1998,7 +1999,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &5011246830213394615
 GameObject:
   m_ObjectHideFlags: 0
@@ -2092,7 +2093,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.0378747, y: -0.5110938}

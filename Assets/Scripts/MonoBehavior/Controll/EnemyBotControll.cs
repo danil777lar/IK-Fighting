@@ -24,15 +24,17 @@ public class EnemyBotControll : MonoBehaviour, IControll
         return Input.GetMouseButton(button);
     }
 
-    public float GetAttackButtonAngle(int button)
+    public Vector2 GetAttackButtonNormal(int button)
     {
         if (Input.GetMouseButton(button))
         {
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = 10f;
-            return Vector2.SignedAngle(Camera.main.ScreenToWorldPoint(mousePosition) - _armRoot.position, Vector2.right);
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            Debug.DrawLine(mousePosition, (Vector2)_armRoot.position, Color.red);
+            return ((Vector2)(mousePosition - _armRoot.position)).normalized;
         }
-        else return -1f;
+        else return Vector2.zero;
     }
 
     public bool GetJump()
@@ -54,5 +56,7 @@ public class EnemyBotControll : MonoBehaviour, IControll
     {
         return Input.GetKey("down");
     }
+
+    public Transform GetArmRoot() => _armRoot;
     #endregion
 }

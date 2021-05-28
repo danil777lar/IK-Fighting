@@ -29,6 +29,7 @@ public class PhysicsMachine : MonoBehaviour
     [Header("Motion")]
     [SerializeField] private float walkSpeed = 3f;
     [SerializeField] private float jumpForce = 15f;
+    [SerializeField] private Transform armRoot;
 
     [HideInInspector]
     public Dictionary<Rigidbody2D, PointerOffset> offsets;
@@ -63,8 +64,8 @@ public class PhysicsMachine : MonoBehaviour
         { 
             { frontArmRb, new PointerOffset(new Vector2(1f, 2f), 2f)},
             { backArmRb, new PointerOffset(new Vector2(1f, 2f), 2f)},
-            { frontLegRb, new PointerOffset() },
-            { backLegRb, new PointerOffset() },
+            { frontLegRb, new PointerOffset(new Vector2(0f, -1f), 2f)},
+            { backLegRb, new PointerOffset(new Vector2(0f, -1f), 2f)},
         };
     }
 
@@ -145,6 +146,19 @@ public class PhysicsMachine : MonoBehaviour
             else if (Mathf.Abs(backLegRb.position.x - bodyRb.position.x) > DataGameMain.Default.personStepLenght)
                 filler.PushMotion(backLegRb, PointerMotion.LegToNormalDistance);
         }
+
+        foreach (Rigidbody2D rb in new Rigidbody2D[]{frontLegRb, backLegRb})
+        {
+            if (filler.GetTween(rb) == null)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
+                if (hit) 
+                {
+                    float posY = Mathf.Lerp(rb.position.y, hit.point.y, 0.3f);
+                    rb.position = new Vector2(rb.position.x, posY);
+                }
+            }
+        }
     }
 
     private void StayArms() 
@@ -156,7 +170,7 @@ public class PhysicsMachine : MonoBehaviour
             {
                 Vector2 offset = offsets[rb].bodyOffset;
                 offset.x *= direction.Direction;
-                Vector2 position = bodyRb.position + offset;
+                Vector2 position = (!controll.GetAttackButtonDown(rbs.IndexOf(rb)) ? bodyRb.position : (Vector2)armRoot.position) + offset;
                 position.x += (Mathf.PerlinNoise(Time.time, randSeed + rbs.IndexOf(rb)) - 0.5f) * offsets[rb].noiseScale;
                 position.y += (Mathf.PerlinNoise(randSeed + rbs.IndexOf(rb), Time.time) - 0.5f) * offsets[rb].noiseScale;
                 rb.position = Vector2.Lerp(rb.position, position, Time.fixedDeltaTime * offsets[rb].transitionSpeed * (bodyRb.velocity.x + 1));
@@ -172,10 +186,22 @@ public class PhysicsMachine : MonoBehaviour
         bodyRb.drag = 0f;
 
         RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
-        if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight / 2f)
+        if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight)
         {
             _currentState = States.Stay;
             return;
+        }
+
+        List<Rigidbody2D> rbs = new List<Rigidbody2D> { frontArmRb, backArmRb, frontLegRb, backLegRb };
+        foreach (Rigidbody2D rb in rbs)
+        {
+            if (filler.GetTween(rb) == null)
+            {
+                Vector2 offset = offsets[rb].bodyOffset;
+                offset.x *= direction.Direction;
+                Vector2 position = (!controll.GetAttackButtonDown(rbs.IndexOf(rb)) ? bodyRb.position : (Vector2)armRoot.position) + offset;
+                rb.position = Vector2.Lerp(rb.position, position, 0.15f);
+            }
         }
     }
     #endregion

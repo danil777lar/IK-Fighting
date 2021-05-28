@@ -10,6 +10,7 @@ public static partial class MotionBuilder
     private static Dictionary<PointerMotion, MotionMethod> motionMethods = new Dictionary<PointerMotion, MotionMethod>() 
     {
         {PointerMotion.ArmCalm, ArmCalm},
+        {PointerMotion.ArmPunch, ArmPunch},
         {PointerMotion.LegCalm, LegCalm},
         {PointerMotion.LegStep, LegStep},
         {PointerMotion.LegToNormalDistance, LegToNormalDistance}

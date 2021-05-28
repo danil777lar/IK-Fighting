@@ -11,12 +11,18 @@ public class FightController : MonoBehaviour
     [SerializeField] private Rigidbody2D _pointer;
 
     private PhysicsMachine _physicsMachine;
+    private PointerFiller _filler;
+    private IControll _controll;
     private Weapon _curentWeapon;
+
+    private bool _isAiming = false;
     private int _curentWeaponId = 0;
 
     private void Start()
     {
         _physicsMachine = GetComponent<PhysicsMachine>();
+        _controll = GetComponent<IControll>();
+        _filler = GetComponent<PointerFiller>();
         SetupWeapon();
     }
 
@@ -35,4 +41,37 @@ public class FightController : MonoBehaviour
 
         _physicsMachine.offsets[_pointer].bodyOffset = _curentWeapon.CalmOffset;
     }
+
+    private void FixedUpdate()
+    {
+        if (_controll.GetAttackButtonDown(0)) 
+        {
+            if (_curentWeapon.OnPointerDown != PointerMotion.None)
+                _filler.PushMotion(_pointer, _curentWeapon.OnPointerDown, () => _isAiming = true);
+            else 
+                _isAiming = true;
+        }
+
+        if (_isAiming)
+        {
+            _physicsMachine.offsets[_pointer].bodyOffset = _curentWeapon.CalmOffset.magnitude * _controll.GetAttackButtonNormal(0) * -1f;
+            _physicsMachine.offsets[_pointer].noiseScale = 0f;
+            _physicsMachine.offsets[_pointer].transitionSpeed = 1 / Time.fixedDeltaTime;
+        }
+        else
+        {
+            _physicsMachine.offsets[_pointer].bodyOffset = _curentWeapon.CalmOffset;
+            _physicsMachine.offsets[_pointer].noiseScale = 1f;
+            _physicsMachine.offsets[_pointer].transitionSpeed = 5f;
+        }
+
+        if (!_controll.GetAttackButton(0) && _isAiming)
+        {
+            _curentWeapon.SetDamagable(true);
+            _filler.PushMotion(_pointer, _curentWeapon.OnPointerUp, () => _curentWeapon.SetDamagable(false));
+            _isAiming = false;
+        }
+    }
+
+
 }

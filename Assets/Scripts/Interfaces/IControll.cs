@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface IControll
 {
+    Transform GetArmRoot();
+
     bool GetMoveRight();
 
     bool GetMoveLeft();
@@ -16,5 +18,5 @@ public interface IControll
 
     bool GetAttackButton(int button);
 
-    float GetAttackButtonAngle(int button);
+    Vector2 GetAttackButtonNormal(int button);
 }

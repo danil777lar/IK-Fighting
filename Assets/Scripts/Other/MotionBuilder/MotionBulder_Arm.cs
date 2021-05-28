@@ -9,4 +9,13 @@ public static partial class MotionBuilder
     {
         return t.DOMove(Vector2.zero, 1f);
     }
+
+    private static Tween ArmPunch(Rigidbody2D t)
+    {
+        Transform armRoot = t.GetComponentInParent<IControll>().GetArmRoot();
+        Vector2 targetPosition = (Vector2)armRoot.position + ((Vector2)armRoot.position - t.position)*2f;
+        return t.DOMove(targetPosition, 0.5f)
+            .SetUpdate(UpdateType.Fixed)
+            .SetEase(Ease.InQuad);
+    }
 }
