@@ -66,7 +66,7 @@ public class FightController : MonoBehaviour
 
             _physicsMachine.offsets[_pointer].bodyOffset = offset;
             _physicsMachine.offsets[_pointer].noiseScale = 0f;
-            _physicsMachine.offsets[_pointer].transitionSpeed = 1 / Time.fixedDeltaTime;
+            _physicsMachine.offsets[_pointer].transitionSpeed = 5f;
         }
         else
         {

@@ -14,7 +14,7 @@ public static partial class MotionBuilder
     {
         Transform armRoot = t.GetComponentInParent<IControll>().GetArmRoot();
         Vector2 targetPosition = (Vector2)armRoot.position + ((Vector2)armRoot.position - t.position)*2f;
-        return t.DOMove(targetPosition, 0.5f)
+        return t.DOMove(targetPosition, 0.2f)
             .SetUpdate(UpdateType.Fixed)
             .SetEase(Ease.InQuad);
     }

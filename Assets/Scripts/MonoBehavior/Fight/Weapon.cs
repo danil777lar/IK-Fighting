@@ -35,6 +35,13 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.tag == "Weapon") 
+        {
+            damageCollider.enabled = false;
+            return;
+        }
+
+
         int targetLayer = 0;
         if (damageCollider.gameObject.layer == LayerMask.NameToLayer("Player"))
             targetLayer = LayerMask.NameToLayer("Enemy");
@@ -44,7 +51,13 @@ public class Weapon : MonoBehaviour
         if (collision.gameObject.layer == targetLayer)
             collision.gameObject.GetComponentInParent<HealthManager>().SetDamage(5, 10);
 
-        Rigidbody2D pointer = collision.gameObject.GetComponentInParent<ProcedureAnimation>()?.Pointer.GetComponent<Rigidbody2D>();
+
+
+        Rigidbody2D pointer = null;
+        if (collision.tag == "Body")
+            pointer = collision.GetComponent<Rigidbody2D>();
+        else
+            pointer = collision.GetComponentInParent<ProcedureAnimation>()?.Pointer.GetComponent<Rigidbody2D>();
         if (pointer)
         {
             pointer.GetComponentInParent<PointerFiller>().PushMotion(pointer, PointerMotion.None);
@@ -55,7 +68,8 @@ public class Weapon : MonoBehaviour
 
             Vector2 forceDirection = (pointer.position - (Vector2)transform.position).normalized;
             pointer.AddForce(forceDirection * 10f, ForceMode2D.Impulse);
-            StartCoroutine(SetKinematic(pointer, 1f));
+            if (pointer.tag != "Body")
+                StartCoroutine(SetKinematic(pointer, 1f));
         }
     }
 
