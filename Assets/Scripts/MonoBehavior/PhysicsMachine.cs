@@ -89,6 +89,7 @@ public class PhysicsMachine : MonoBehaviour
         {
             bodyRb.gravityScale = 0f;
             bodyRb.drag = 3f;
+            bodyRb.freezeRotation = true;
 
             RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
             if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight)
@@ -128,6 +129,12 @@ public class PhysicsMachine : MonoBehaviour
 
     private void StayLegs() 
     {
+        if (!frontLegRb.isKinematic || !backLegRb.isKinematic) 
+        {
+            _currentState = States.Fall;
+            return;
+        }
+
         if (filler.GetTween(frontLegRb) == null && filler.GetTween(backLegRb) == null)
         {
 
@@ -166,7 +173,7 @@ public class PhysicsMachine : MonoBehaviour
         List<Rigidbody2D> rbs = new List<Rigidbody2D>{ frontArmRb, backArmRb };
         foreach (Rigidbody2D rb in rbs) 
         {
-            if (filler.GetTween(rb) == null)
+            if (filler.GetTween(rb) == null && rb.isKinematic)
             {
                 Vector2 offset = offsets[rb].bodyOffset;
                 offset.x *= direction.Direction;
@@ -184,6 +191,7 @@ public class PhysicsMachine : MonoBehaviour
     {
         bodyRb.gravityScale = 1f;
         bodyRb.drag = 0f;
+        bodyRb.freezeRotation = false;
 
         RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
         if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight / 2f)
@@ -197,6 +205,8 @@ public class PhysicsMachine : MonoBehaviour
         {
             if (filler.GetTween(rb) == null)
             {
+                rb.velocity = Vector2.zero;
+                rb.isKinematic = true;
                 Vector2 offset = offsets[rb].bodyOffset;
                 offset.x *= direction.Direction;
                 Vector2 position = (!controll.GetAttackButtonDown(rbs.IndexOf(rb)) ? bodyRb.position : (Vector2)armRoot.position) + offset;

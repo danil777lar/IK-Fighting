@@ -539,7 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapons:
-  - {fileID: 5434823695637852710, guid: c51e45a3f73fe994092827e0d02ef54a, type: 3}
+  - {fileID: 219905331661297804, guid: b4e00226be912c04f9486399f169b715, type: 3}
   - {fileID: 219905331661297804, guid: b4e00226be912c04f9486399f169b715, type: 3}
   _arm: {fileID: 5011246828643858662}
   _pointer: {fileID: 5011246828271483037}
@@ -611,7 +611,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5011246828271483106}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -871,7 +871,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5011246828862559141}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1200,7 +1200,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5011246829301707337}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1743,7 +1743,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5011246830038982886}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

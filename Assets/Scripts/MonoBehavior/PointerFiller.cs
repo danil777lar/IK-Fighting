@@ -23,7 +23,7 @@ public class PointerFiller : MonoBehaviour
             {
                 _tween?.Kill();
                 _tween = value;
-                if (_tween.onComplete == null)
+                if (_tween != null && _tween.onComplete == null)
                     _tween.onComplete += () => _tween = null;
             }
         }
@@ -43,14 +43,16 @@ public class PointerFiller : MonoBehaviour
     public void PushMotion(KinematicsPointerType pt, PointerMotion motion, OnMotionComplete onMotionComplete = null) 
     {
         Pointer pointer = pointers.Find((p) => p.type == pt);
-        if (pointer != null) pointer.Motion = MotionBuilder.GetTween(pointer.pointer, motion);
+        if (pointer != null)
+            pointer.Motion = motion != PointerMotion.None ? MotionBuilder.GetTween(pointer.pointer, motion) : null;
         if (onMotionComplete != null) pointer.Motion.onComplete += () => onMotionComplete.Invoke();
     }
 
     public void PushMotion(Rigidbody2D rb, PointerMotion motion, OnMotionComplete onMotionComplete = null)
     {
         Pointer pointer = pointers.Find((p) => p.pointer == rb);
-        if (pointer != null) pointer.Motion = MotionBuilder.GetTween(pointer.pointer, motion);
+        if (pointer != null)
+            pointer.Motion = motion != PointerMotion.None ? MotionBuilder.GetTween(pointer.pointer, motion) : null;
         if (onMotionComplete != null) pointer.Motion.onComplete += () => onMotionComplete.Invoke();
     }
 

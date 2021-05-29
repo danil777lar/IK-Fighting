@@ -44,6 +44,13 @@ public class FightController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!_pointer.isKinematic) 
+        {
+            _curentWeapon.SetDamagable(false);
+            _isAiming = false;
+            return;
+        }
+
         if (_controll.GetAttackButtonDown(0)) 
         {
             if (_curentWeapon.OnPointerDown != PointerMotion.None)

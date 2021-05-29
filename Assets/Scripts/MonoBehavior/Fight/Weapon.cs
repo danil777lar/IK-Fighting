@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
         damageCollider.enabled = false;
     }
 
-    public void SetDamagable(bool arg) 
+    public void SetDamagable(bool arg)
     {
         damageCollider.enabled = arg;
     }
@@ -44,6 +44,25 @@ public class Weapon : MonoBehaviour
         if (collision.gameObject.layer == targetLayer)
             collision.gameObject.GetComponentInParent<HealthManager>().SetDamage(5, 10);
 
-        Transform pointer = GetComponentInParent<ProcedureAnimation>().Pointer;
+        Rigidbody2D pointer = collision.gameObject.GetComponentInParent<ProcedureAnimation>()?.Pointer.GetComponent<Rigidbody2D>();
+        if (pointer)
+        {
+            pointer.GetComponentInParent<PointerFiller>().PushMotion(pointer, PointerMotion.None);
+
+            pointer.isKinematic = false;
+            pointer.gravityScale = 0f;
+
+
+            Vector2 forceDirection = (pointer.position - (Vector2)transform.position).normalized;
+            pointer.AddForce(forceDirection * 10f, ForceMode2D.Impulse);
+            StartCoroutine(SetKinematic(pointer, 1f));
+        }
+    }
+
+    private IEnumerator SetKinematic(Rigidbody2D pointer, float delay) 
+    {
+        yield return new WaitForSeconds(delay);
+        pointer.velocity = Vector2.zero;
+        pointer.isKinematic = true;
     }
 }
