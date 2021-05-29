@@ -35,20 +35,15 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Weapon") 
-        {
-            damageCollider.enabled = false;
-            return;
-        }
-
-
         int targetLayer = 0;
         if (damageCollider.gameObject.layer == LayerMask.NameToLayer("Player"))
             targetLayer = LayerMask.NameToLayer("Enemy");
         else if (damageCollider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             targetLayer = LayerMask.NameToLayer("Player");
 
-        if (collision.gameObject.layer == targetLayer)
+        if (collision.tag == "Weapon")
+            damageCollider.enabled = false;
+        else if (collision.gameObject.layer == targetLayer)
             collision.gameObject.GetComponentInParent<HealthManager>().SetDamage(5, 10);
 
 

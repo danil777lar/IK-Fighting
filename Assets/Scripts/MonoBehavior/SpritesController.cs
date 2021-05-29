@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class SpritesController : MonoBehaviour
 {
+    private List<SpriteRenderer> sprites;
+
     void Start()
     {
+        sprites = new List<SpriteRenderer>();
+        foreach (SpriteRenderer sprite in FindObjectsOfType<SpriteRenderer>())
+            sprites.Add(sprite);
+
         SetSpriteColors();
     }
 
@@ -20,8 +26,11 @@ public class SpritesController : MonoBehaviour
                 nearest = l;
         }
 
-        foreach (SpriteRenderer sprite in FindObjectsOfType<SpriteRenderer>())
-            if (sprite.tag != "Light") sprite.color = nearest.color; 
-
+        foreach (SpriteRenderer sprite in sprites.FindAll((s) => s.tag != "Light")) 
+        {
+            Color.RGBToHSV(nearest.color, out float hl, out float sl, out float vl);
+            Color.RGBToHSV(sprite.color, out float hs, out float ss, out float vs);
+            sprite.color = Color.HSVToRGB(hl, sl, vl - (vl - vs));
+        }
     }
 }
