@@ -186,7 +186,7 @@ public class PhysicsMachine : MonoBehaviour
         bodyRb.drag = 0f;
 
         RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
-        if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight)
+        if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight / 2f)
         {
             _currentState = States.Stay;
             return;

@@ -54,7 +54,10 @@ public class FightController : MonoBehaviour
 
         if (_isAiming)
         {
-            _physicsMachine.offsets[_pointer].bodyOffset = _curentWeapon.CalmOffset.magnitude * _controll.GetAttackButtonNormal(0) * -1f;
+            Vector2 offset = _curentWeapon.CalmOffset.magnitude * _controll.GetAttackButtonNormal(0) * -1f;
+            offset.x *= GetComponent<DirectionController>().Direction;
+
+            _physicsMachine.offsets[_pointer].bodyOffset = offset;
             _physicsMachine.offsets[_pointer].noiseScale = 0f;
             _physicsMachine.offsets[_pointer].transitionSpeed = 1 / Time.fixedDeltaTime;
         }

@@ -33,7 +33,7 @@ public class Weapon : MonoBehaviour
         damageCollider.enabled = arg;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         int targetLayer = 0;
         if (damageCollider.gameObject.layer == LayerMask.NameToLayer("Player"))
