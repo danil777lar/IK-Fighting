@@ -17,6 +17,7 @@ public class FightController : MonoBehaviour
 
     private bool _isAiming = false;
     private int _curentWeaponId = 0;
+    private Vector2 _forceDirection;
 
     private void Start()
     {
@@ -59,9 +60,10 @@ public class FightController : MonoBehaviour
                 _isAiming = true;
         }
 
-        if (_isAiming)
+        if (_controll.GetAttackButton(0) && _isAiming)
         {
-            Vector2 offset = _curentWeapon.CalmOffset.magnitude * _controll.GetAttackButtonNormal(0) * -1f;
+            _forceDirection = _controll.GetAttackButtonNormal(0);
+            Vector2 offset = _curentWeapon.CalmOffset.magnitude * -_forceDirection;
             offset.x *= GetComponent<DirectionController>().Direction;
 
             _physicsMachine.offsets[_pointer].bodyOffset = offset;
@@ -78,6 +80,8 @@ public class FightController : MonoBehaviour
         if (!_controll.GetAttackButton(0) && _isAiming)
         {
             _curentWeapon.SetDamagable(true);
+            Rigidbody2D bodyRb = _filler.GetPointer(KinematicsPointerType.Body);
+            bodyRb.AddForce(_forceDirection * 10f * bodyRb.mass, ForceMode2D.Impulse);
             _filler.PushMotion(_pointer, _curentWeapon.OnPointerUp, () => _curentWeapon.SetDamagable(false));
             _isAiming = false;
         }
