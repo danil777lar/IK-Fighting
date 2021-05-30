@@ -509,7 +509,7 @@ MonoBehaviour:
   animationSpeed: 1
   frequencyScale: 0.02
   frequencySpeed: 0.5
-  walkSpeed: 3
+  walkSpeed: 5
   jumpForce: 8
   armRoot: {fileID: 5011246828643858661}
 --- !u!114 &1289198668588898157

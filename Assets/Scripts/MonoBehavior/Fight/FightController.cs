@@ -51,7 +51,7 @@ public class FightController : MonoBehaviour
             return;
         }
 
-        if (_controll.GetAttackButtonDown(0)) 
+        if (_controll.GetAttackButton(0) && !_isAiming) 
         {
             if (_curentWeapon.OnPointerDown != PointerMotion.None)
                 _filler.PushMotion(_pointer, _curentWeapon.OnPointerDown, () => _isAiming = true);

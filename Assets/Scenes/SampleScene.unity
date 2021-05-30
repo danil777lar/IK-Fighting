@@ -5702,6 +5702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _armRoot: {fileID: 1144639238}
+  isControlling: 1
 --- !u!114 &1975363201 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1289198668588898157, guid: 6a2f6e8588538aa43843f7bf6a9276e1,

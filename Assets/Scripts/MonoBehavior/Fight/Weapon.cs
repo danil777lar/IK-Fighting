@@ -19,18 +19,22 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] private int _damage;
     [SerializeField] private Collider2D _damageCollider;
+    [SerializeField] private ParticleSystem _trailParticles;
+    [SerializeField] private ParticleSystem _blockParticles;
+
 
     private Vector2 _lastPoint;
     private Vector2 _forceDirection;
-    private Transform _pointer;
+    private Rigidbody2D _pointer;
     private IWeapon _weaponObject;
+
 
     #region Lifecycle
 
     private void Start()
     {
         _weaponObject = GetComponent<IWeapon>();
-        _pointer = GetComponentInParent<ProcedureAnimation>().Pointer;
+        _pointer = GetComponentInParent<ProcedureAnimation>().Pointer.GetComponent<Rigidbody2D>();
 
         _damageCollider.gameObject.layer = GetComponentInParent<FightController>().gameObject.layer;
         _damageCollider.enabled = false;
@@ -54,12 +58,16 @@ public class Weapon : MonoBehaviour
             targetLayer = LayerMask.NameToLayer("Player");
 
 
-        if (collision.tag == "Weapon")
-            _damageCollider.enabled = false;
-        else if (collision.gameObject.layer == targetLayer) 
+        if (collision.tag == "Weapon") 
         {
-            int damage = _damage / (collision.CompareTag("Body") ? 1 : 2); 
-            collision.gameObject.GetComponentInParent<HealthManager>().SetDamage(Random.Range(damage / 2 , damage + 1), _damage);
+            SetDamagable(false);
+            if (_blockParticles != null)
+                _blockParticles.Play();
+        }
+        else if (collision.gameObject.layer == targetLayer)
+        {
+            int damage = _damage / (collision.CompareTag("Body") ? 1 : 2);
+            collision.gameObject.GetComponentInParent<HealthManager>().SetDamage(Random.Range(damage / 2, damage + 1), _damage);
         }
 
 
@@ -86,6 +94,14 @@ public class Weapon : MonoBehaviour
     public void SetDamagable(bool arg)
     {
         _damageCollider.enabled = arg;
+        //Debug.Break();
+        if (_trailParticles != null)
+        {
+            if (arg)
+                _trailParticles.Play();
+            else
+                _trailParticles.Stop();
+        }
     }
 
     private IEnumerator SetKinematic(Rigidbody2D pointer, float delay) 
