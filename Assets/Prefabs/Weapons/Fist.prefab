@@ -79,7 +79,8 @@ MonoBehaviour:
   _calmOffset: {x: 1.5, y: 2}
   _onPointerDown: 0
   _onPointerUp: 3
-  damageCollider: {fileID: 7107550637162257972}
+  _damage: 5
+  _damageCollider: {fileID: 7107550637162257972}
 --- !u!58 &7107550637162257972
 CircleCollider2D:
   m_ObjectHideFlags: 0

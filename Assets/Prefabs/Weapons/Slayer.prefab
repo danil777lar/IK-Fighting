@@ -50,7 +50,8 @@ MonoBehaviour:
   _calmOffset: {x: 4, y: 2}
   _onPointerDown: 0
   _onPointerUp: 3
-  damageCollider: {fileID: 7127943884657068792}
+  _damage: 10
+  _damageCollider: {fileID: 7127943884657068792}
 --- !u!50 &6490274554805301011
 Rigidbody2D:
   serializedVersion: 4

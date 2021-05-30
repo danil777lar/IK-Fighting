@@ -6,6 +6,9 @@ public class EnemyBotControll : MonoBehaviour, IControll
 {
     [SerializeField] private Transform _armRoot;
 
+    [Header("Debug")]
+    [SerializeField] private bool isControlling = false;
+
     private DirectionController _directionController;
 
     public void Awake()
@@ -16,12 +19,12 @@ public class EnemyBotControll : MonoBehaviour, IControll
     #region IControll
     public bool GetAttackButtonDown(int button)
     {
-        return Input.GetMouseButtonDown(button);
+        return isControlling ? Input.GetMouseButtonDown(button) : false;
     }
 
     public bool GetAttackButton(int button)
     {
-        return Input.GetMouseButton(button);
+        return isControlling ? Input.GetMouseButton(button) : false;
     }
 
     public Vector2 GetAttackButtonNormal(int button)

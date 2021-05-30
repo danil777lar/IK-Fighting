@@ -17,35 +17,50 @@ public class Weapon : MonoBehaviour
     [SerializeField] private PointerMotion _onPointerUp;
     public PointerMotion OnPointerUp => _onPointerUp;
 
-    [SerializeField] private Collider2D damageCollider;
+    [SerializeField] private int _damage;
+    [SerializeField] private Collider2D _damageCollider;
 
+    private Vector2 _lastPoint;
+    private Vector2 _forceDirection;
+    private Transform _pointer;
     private IWeapon _weaponObject;
+
+    #region Lifecycle
 
     private void Start()
     {
         _weaponObject = GetComponent<IWeapon>();
-        damageCollider.gameObject.layer = GetComponentInParent<FightController>().gameObject.layer;
-        damageCollider.enabled = false;
+        _pointer = GetComponentInParent<ProcedureAnimation>().Pointer;
+
+        _damageCollider.gameObject.layer = GetComponentInParent<FightController>().gameObject.layer;
+        _damageCollider.enabled = false;
+
+        _lastPoint = _pointer.position;
+        _forceDirection = Vector2.zero;
     }
 
-    public void SetDamagable(bool arg)
+    private void FixedUpdate()
     {
-        damageCollider.enabled = arg;
+        _forceDirection = ((Vector2)_pointer.position - _lastPoint).normalized;
+        _lastPoint = _pointer.position;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         int targetLayer = 0;
-        if (damageCollider.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (_damageCollider.gameObject.layer == LayerMask.NameToLayer("Player"))
             targetLayer = LayerMask.NameToLayer("Enemy");
-        else if (damageCollider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        else if (_damageCollider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             targetLayer = LayerMask.NameToLayer("Player");
 
-        if (collision.tag == "Weapon")
-            damageCollider.enabled = false;
-        else if (collision.gameObject.layer == targetLayer)
-            collision.gameObject.GetComponentInParent<HealthManager>().SetDamage(5, 10);
 
+        if (collision.tag == "Weapon")
+            _damageCollider.enabled = false;
+        else if (collision.gameObject.layer == targetLayer) 
+        {
+            int damage = _damage / (collision.CompareTag("Body") ? 1 : 2); 
+            collision.gameObject.GetComponentInParent<HealthManager>().SetDamage(Random.Range(damage / 2 , damage + 1), _damage);
+        }
 
 
         Rigidbody2D pointer = null;
@@ -60,12 +75,17 @@ public class Weapon : MonoBehaviour
             pointer.isKinematic = false;
             pointer.gravityScale = 0f;
 
-
-            Vector2 forceDirection = (pointer.position - (Vector2)transform.position).normalized;
-            pointer.AddForce(forceDirection * 10f, ForceMode2D.Impulse);
+            pointer.AddForce(_forceDirection * 10f, ForceMode2D.Impulse);
             if (pointer.tag != "Body")
-                StartCoroutine(SetKinematic(pointer, 1f));
+                StartCoroutine(SetKinematic(pointer, 0.5f));
         }
+    }
+
+    #endregion
+
+    public void SetDamagable(bool arg)
+    {
+        _damageCollider.enabled = arg;
     }
 
     private IEnumerator SetKinematic(Rigidbody2D pointer, float delay) 
