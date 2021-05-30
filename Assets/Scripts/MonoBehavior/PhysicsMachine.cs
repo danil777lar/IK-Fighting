@@ -37,6 +37,7 @@ public class PhysicsMachine : MonoBehaviour
     private int randSeed;
     private PointerFiller filler;
     private DirectionController direction;
+    private FightController fight;
     private IControll controll;
     private States _currentState = States.Stay;
 
@@ -51,6 +52,7 @@ public class PhysicsMachine : MonoBehaviour
         controll = GetComponent<IControll>();
         filler = GetComponent<PointerFiller>();
         direction = GetComponent<DirectionController>();
+        fight = GetComponent<FightController>();
 
         randSeed = UnityEngine.Random.Range(0, 100);
 
@@ -177,10 +179,18 @@ public class PhysicsMachine : MonoBehaviour
             {
                 Vector2 offset = offsets[rb].bodyOffset;
                 offset.x *= direction.Direction;
-                Vector2 position = (!controll.GetAttackButtonDown(rbs.IndexOf(rb)) ? bodyRb.position : (Vector2)armRoot.position) + offset;
-                position.x += (Mathf.PerlinNoise(Time.time, randSeed + rbs.IndexOf(rb)) - 0.5f) * offsets[rb].noiseScale;
-                position.y += (Mathf.PerlinNoise(randSeed + rbs.IndexOf(rb), Time.time) - 0.5f) * offsets[rb].noiseScale;
-                rb.position = Vector2.Lerp(rb.position, position, Time.fixedDeltaTime * offsets[rb].transitionSpeed * (bodyRb.velocity.x + 1));
+                if (fight.AimValue > 0f && controll.GetAttackButton(rbs.IndexOf(rb)))
+                {
+                    Vector2 position = (Vector2)armRoot.position + offset;
+                    rb.position = Vector2.Lerp(rb.position, position, fight.AimValue);
+                }
+                else 
+                {
+                    Vector2 position = bodyRb.position + offset;
+                    position.x += (Mathf.PerlinNoise(Time.time, randSeed + rbs.IndexOf(rb)) - 0.5f) * offsets[rb].noiseScale;
+                    position.y += (Mathf.PerlinNoise(randSeed + rbs.IndexOf(rb), Time.time) - 0.5f) * offsets[rb].noiseScale;
+                    rb.position = Vector2.Lerp(rb.position, position, Time.fixedDeltaTime * offsets[rb].transitionSpeed * (bodyRb.velocity.x + 1));
+                }
             }
         }
     }

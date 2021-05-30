@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using LarjeEnum;
 
 public class FightController : MonoBehaviour
@@ -12,12 +13,16 @@ public class FightController : MonoBehaviour
 
     private PhysicsMachine _physicsMachine;
     private PointerFiller _filler;
-    private IControll _controll;
     private Weapon _curentWeapon;
+    private IControll _controll;
 
     private bool _isAiming = false;
     private int _curentWeaponId = 0;
+    private float _aimValue = 0f;
     private Vector2 _forceDirection;
+    private Tween _aimValueTween;
+
+    public float AimValue => _aimValue;
 
     private void Start()
     {
@@ -48,16 +53,19 @@ public class FightController : MonoBehaviour
         if (!_pointer.isKinematic) 
         {
             _curentWeapon.SetDamagable(false);
-            _isAiming = false;
+            EnableAiming(false);
             return;
         }
 
         if (_controll.GetAttackButton(0) && !_isAiming) 
         {
             if (_curentWeapon.OnPointerDown != PointerMotion.None)
-                _filler.PushMotion(_pointer, _curentWeapon.OnPointerDown, () => _isAiming = true);
+                _filler.PushMotion(_pointer, _curentWeapon.OnPointerDown, () => EnableAiming(true));
             else 
-                _isAiming = true;
+            {
+                _pointer.position = _arm.transform.GetChild(_arm.transform.childCount - 1).position;
+                EnableAiming(true);
+            }
         }
 
         if (_controll.GetAttackButton(0) && _isAiming)
@@ -83,9 +91,28 @@ public class FightController : MonoBehaviour
             Rigidbody2D bodyRb = _filler.GetPointer(KinematicsPointerType.Body);
             bodyRb.AddForce(_forceDirection * 10f * bodyRb.mass, ForceMode2D.Impulse);
             _filler.PushMotion(_pointer, _curentWeapon.OnPointerUp, () => _curentWeapon.SetDamagable(false));
-            _isAiming = false;
+            EnableAiming(false);
         }
     }
 
+    private void EnableAiming(bool arg) 
+    {
+        _isAiming = arg;
+        _aimValue = 0f;
+        if (arg)
+        {
+            _aimValueTween = DOTween.To
+                (
+                    () => _aimValue,
+                    (v) => _aimValue = v,
+                    1f, 2f
+                )
+                .SetUpdate(UpdateType.Fixed);
+        }
+        else
+        {
+            _aimValueTween?.Kill();
+        }
+    }
 
 }
