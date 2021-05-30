@@ -177,15 +177,17 @@ public class PhysicsMachine : MonoBehaviour
         {
             if (filler.GetTween(rb) == null && rb.isKinematic)
             {
-                Vector2 offset = offsets[rb].bodyOffset;
-                offset.x *= direction.Direction;
                 if (fight.AimValue > 0f && controll.GetAttackButton(rbs.IndexOf(rb)))
                 {
-                    Vector2 position = (Vector2)armRoot.position + offset;
-                    rb.position = Vector2.Lerp(rb.position, position, fight.AimValue);
+                    Vector2 offset = fight.AimOffset;
+                    offset.x *= direction.Direction;
+                    Vector2 targetPosition = (Vector2)armRoot.position + offset;
+                    rb.position = Vector2.Lerp(fight.StartPosition, targetPosition, fight.AimValue);
                 }
                 else 
                 {
+                    Vector2 offset = offsets[rb].bodyOffset;
+                    offset.x *= direction.Direction;
                     Vector2 position = bodyRb.position + offset;
                     position.x += (Mathf.PerlinNoise(Time.time, randSeed + rbs.IndexOf(rb)) - 0.5f) * offsets[rb].noiseScale;
                     position.y += (Mathf.PerlinNoise(randSeed + rbs.IndexOf(rb), Time.time) - 0.5f) * offsets[rb].noiseScale;
@@ -210,7 +212,7 @@ public class PhysicsMachine : MonoBehaviour
             return;
         }
 
-        List<Rigidbody2D> rbs = new List<Rigidbody2D> { frontArmRb, backArmRb, frontLegRb, backLegRb };
+        List<Rigidbody2D> rbs = new List<Rigidbody2D> {frontLegRb, backLegRb };
         foreach (Rigidbody2D rb in rbs)
         {
             if (filler.GetTween(rb) == null)
@@ -223,6 +225,8 @@ public class PhysicsMachine : MonoBehaviour
                 rb.position = Vector2.Lerp(rb.position, position, 0.15f);
             }
         }
+
+        StayArms();
     }
     #endregion
 }

@@ -543,6 +543,7 @@ MonoBehaviour:
   - {fileID: 219905331661297804, guid: b4e00226be912c04f9486399f169b715, type: 3}
   _arm: {fileID: 5011246828643858662}
   _pointer: {fileID: 5011246828271483037}
+  _forceIndicator: {fileID: 712515444}
 --- !u!114 &1250260662
 MonoBehaviour:
   m_ObjectHideFlags: 0
