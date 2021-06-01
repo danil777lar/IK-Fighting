@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 1773352084209901460}
   - component: {fileID: 1773352084209901463}
   - component: {fileID: 7127943884657068792}
+  - component: {fileID: 7638537709334818376}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Weapon
@@ -187,6 +188,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.48252708, y: 2.9435353}
   m_EdgeRadius: 0
+--- !u!114 &7638537709334818376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773352084209901461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ab5291a0ef8c049816fd91b3d51276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 219905331661297804}
 --- !u!1 &1773352085528402300
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,29 +22,19 @@ public class Weapon : MonoBehaviour
     [SerializeField] private ParticleSystem _trailParticles;
     [SerializeField] private ParticleSystem _blockParticles;
 
-
     private bool _isBlocked;
     private float _damageScale;
     private Vector2 _lastPoint;
     private Vector2 _forceDirection;
     private Rigidbody2D _armPointer;
-    private Rigidbody2D _bodyPointer;
-    private ProcedureAnimation _armRoot;
-    private IWeapon _weaponObject;
-    private List<Collider2D> _collisions;
+    private List<IDamageTracker> _damageTrackers;
 
     #region Lifecycle
 
     private void Start()
     {
-        _weaponObject = GetComponent<IWeapon>();
-
-        _armRoot = GetComponentInParent<ProcedureAnimation>();
-
         PointerFiller filler = GetComponentInParent<PointerFiller>();
         _armPointer = filler.GetPointer(KinematicsPointerType.FrontArm);
-        _bodyPointer = filler.GetPointer(KinematicsPointerType.Body);
-
         _damageCollider.gameObject.layer = GetComponentInParent<FightController>().gameObject.layer;
         _damageCollider.enabled = false;
 
@@ -54,39 +44,34 @@ public class Weapon : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _forceDirection = ((Vector2)_armPointer.position - _lastPoint).normalized;
+        _forceDirection = (_armPointer.position - _lastPoint).normalized;
         _lastPoint = _armPointer.position;
 
         _isBlocked = false;
-        _collisions = new List<Collider2D>();
+        _damageTrackers = new List<IDamageTracker>();
         StartCoroutine(ProcessCollisions());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Weapon") 
+        if (collision.TryGetComponent(out IDamageTracker tracker)) 
         {
-            _isBlocked = true;
-            SetDamagable(false);
-
-            GetComponentInParent<PointerFiller>().PushMotion(_armPointer, PointerMotion.None);
-            _armPointer.position = _armRoot.transform.GetChild(_armRoot.transform.childCount - 1).position;
-            _armPointer.isKinematic = false;
-            _armPointer.gravityScale = 0f;
-            _armPointer.AddForce(-_forceDirection * 10f, ForceMode2D.Impulse);
-
-            _bodyPointer.velocity = Vector2.zero;
-            _bodyPointer.AddForce(-_forceDirection * 5f, ForceMode2D.Impulse);
-
-            StartCoroutine(SetKinematic(_armPointer, 0.5f));
-
-            if (_blockParticles != null)
-                _blockParticles.Play();
+            if (tracker is WeaponDamageTracker)
+                tracker.SendDamage(_damage, _forceDirection);
+            else
+                _damageTrackers.Add(tracker);
         }
-        _collisions.Add(collision);
     }
 
     #endregion
+
+    public void Block()
+    {
+        _isBlocked = true;
+        SetDamagable(false);
+        if (_blockParticles != null)
+            _blockParticles.Play();
+    }
 
     public void SetDamagable(bool arg, float damageScale = 0f)
     {
@@ -101,53 +86,12 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private IEnumerator SetKinematic(Rigidbody2D pointer, float delay) 
-    {
-        yield return new WaitForSeconds(delay);
-        pointer.velocity = Vector2.zero;
-        pointer.isKinematic = true;
-    }
-
     private IEnumerator ProcessCollisions()
     {
         yield return new WaitForFixedUpdate();
 
-        int targetLayer = 0;
-        if (_damageCollider.gameObject.layer == LayerMask.NameToLayer("Player"))
-            targetLayer = LayerMask.NameToLayer("Enemy");
-        else if (_damageCollider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            targetLayer = LayerMask.NameToLayer("Player");
-
         if (!_isBlocked)
-        {
-            foreach (Collider2D collision in _collisions)
-            {
-                if (collision.gameObject.layer == targetLayer)
-                {
-                    int damage = _damage / (collision.CompareTag("Body") ? 1 : 2);
-                    damage = Mathf.RoundToInt(damage * _damageScale);
-                    damage = Random.Range(damage / 2, damage + 1);
-                    collision.gameObject.GetComponentInParent<HealthManager>().SetDamage(damage, _damage);
-                }
-
-                Rigidbody2D pointer = null;
-                if (collision.tag == "Body")
-                    pointer = collision.GetComponent<Rigidbody2D>();
-                else
-                    pointer = collision.GetComponentInParent<ProcedureAnimation>()?.Pointer.GetComponent<Rigidbody2D>();
-                if (pointer)
-                {
-                    pointer.GetComponentInParent<PointerFiller>().PushMotion(pointer, PointerMotion.None);
-
-                    pointer.isKinematic = false;
-                    pointer.gravityScale = 0f;
-
-                    pointer.velocity = Vector2.zero;
-                    pointer.AddForce(_forceDirection * 10f * pointer.mass, ForceMode2D.Impulse);
-                    if (pointer.tag != "Body")
-                        StartCoroutine(SetKinematic(pointer, 0.5f));
-                }
-            }
-        }
+            foreach (IDamageTracker tracker in _damageTrackers)
+                tracker.SendDamage(_damage, _forceDirection);
     }
 }

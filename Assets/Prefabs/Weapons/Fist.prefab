@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 7868299592542950656}
   - component: {fileID: 5434823695637852710}
   - component: {fileID: 7107550637162257972}
+  - component: {fileID: 5800625311664871511}
   m_Layer: 0
   m_Name: Fist
   m_TagString: Weapon
@@ -81,6 +82,8 @@ MonoBehaviour:
   _onPointerUp: 3
   _damage: 5
   _damageCollider: {fileID: 7107550637162257972}
+  _trailParticles: {fileID: 0}
+  _blockParticles: {fileID: 0}
 --- !u!58 &7107550637162257972
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -97,3 +100,16 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &5800625311664871511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7868299592542950657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ab5291a0ef8c049816fd91b3d51276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 5434823695637852710}
