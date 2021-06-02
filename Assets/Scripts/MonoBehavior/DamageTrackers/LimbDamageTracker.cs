@@ -28,7 +28,7 @@ public class LimbDamageTracker : MonoBehaviour, IDamageTracker
     {
         int halfdamage = damage / 2;
         int processedDamage = Random.Range(halfdamage / 2, halfdamage + 1);
-        _healthManager.SetDamage(processedDamage, damage);
+        _healthManager.SetDamage(processedDamage, damage, direction);
 
         _filler.PushMotion(_pointer, PointerMotion.None);
         _pointer.isKinematic = false;

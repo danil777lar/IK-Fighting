@@ -20,7 +20,7 @@ public class BodyDamageTracker : MonoBehaviour, IDamageTracker
     public void SendDamage(int damage, Vector2 direction)
     {
         int processedDamage = Random.Range(damage / 2, damage + 1);
-        _healthManager.SetDamage(processedDamage, damage);
+        _healthManager.SetDamage(processedDamage, damage, direction);
 
         _filler.PushMotion(_pointer, PointerMotion.None);
         _pointer.isKinematic = false;
