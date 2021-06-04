@@ -5,7 +5,7 @@ using LarjeEnum;
 
 public class PhysicsMachine : MonoBehaviour
 {
-    enum States { Stay, Fall }
+    public enum States { Stay, Fall, WallSlide }
 
     public class PointerOffset 
     {
@@ -39,7 +39,7 @@ public class PhysicsMachine : MonoBehaviour
     private DirectionController direction;
     private FightController fight;
     private IControll controll;
-    private States _currentState = States.Stay;
+    public States _currentState = States.Stay;
 
     private Rigidbody2D bodyRb;
     private Rigidbody2D frontArmRb;
@@ -73,8 +73,18 @@ public class PhysicsMachine : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_currentState == States.Stay) StayUpdate();
-        else if (_currentState == States.Fall) FallUpdate();
+        switch (_currentState) 
+        {
+            case States.Stay:
+                StayUpdate();
+                break;
+            case States.Fall:
+                FallUpdate();
+                break;
+            case States.WallSlide:
+                WallSlideUpdate();
+                break;
+        }
     }
 
     #region State Stay
@@ -105,9 +115,15 @@ public class PhysicsMachine : MonoBehaviour
                 position.y += (-Mathf.PerlinNoise(randSeed, Time.time * frequencySpeed)) * frequencyScale;
 
                 bodyRb.velocity = bodyRb.velocity * Vector2.right;
+
                 if (controll.GetMoveLeft()) bodyRb.velocity = Vector2.left * walkSpeed;
                 else if (controll.GetMoveRight()) bodyRb.velocity = Vector2.right * walkSpeed;
                 else position.x += (Mathf.PerlinNoise(Time.time * frequencySpeed, randSeed) - 0.5f) * frequencyScale;
+
+                RaycastHit2D hitLeft = Physics2D.Raycast(bodyRb.position, Vector2.left, 1f, LayerMask.GetMask("Ground"));
+                RaycastHit2D hitRight = Physics2D.Raycast(bodyRb.position, Vector2.right, 1f, LayerMask.GetMask("Ground"));
+                if (hitLeft && !controll.GetMoveRight()) bodyRb.velocity = Vector2.zero;
+                if (hitRight && !controll.GetMoveLeft()) bodyRb.velocity = Vector2.zero;
 
                 bodyRb.position = position;
 
@@ -212,7 +228,16 @@ public class PhysicsMachine : MonoBehaviour
             return;
         }
 
-        List<Rigidbody2D> rbs = new List<Rigidbody2D> {frontLegRb, backLegRb };
+        RaycastHit2D hitLeft = Physics2D.Raycast(bodyRb.position, Vector2.left, 1f, LayerMask.GetMask("Ground"));
+        RaycastHit2D hitRight = Physics2D.Raycast(bodyRb.position, Vector2.right, 1f, LayerMask.GetMask("Ground"));
+        if (hitLeft || hitRight)
+        {
+            bodyRb.velocity = Vector2.zero;
+            _currentState = States.WallSlide;
+            return;
+        }
+
+        List<Rigidbody2D> rbs = new List<Rigidbody2D> { frontLegRb, backLegRb };
         foreach (Rigidbody2D rb in rbs)
         {
             if (filler.GetTween(rb) == null)
@@ -228,5 +253,53 @@ public class PhysicsMachine : MonoBehaviour
 
         StayArms();
     }
+    #endregion
+
+    #region WallSlide
+
+    private void WallSlideUpdate() 
+    {
+        RaycastHit2D hitLeft = Physics2D.Raycast(bodyRb.position, Vector2.left, 1f, LayerMask.GetMask("Ground"));
+        RaycastHit2D hitRight = Physics2D.Raycast(bodyRb.position, Vector2.right, 1f, LayerMask.GetMask("Ground"));
+        RaycastHit2D hitDown = Physics2D.Raycast(bodyRb.position, Vector2.down, DataGameMain.Default.personStandHeight, LayerMask.GetMask("Ground"));
+        if (!hitLeft && !hitRight)
+        {
+            _currentState = States.Fall;
+            return;
+        }
+        if (hitDown)
+        {
+            _currentState = States.Stay;
+            return;
+        }
+
+        RaycastHit2D hit = hitLeft ? hitLeft : hitRight;
+
+        bodyRb.drag = 2f;
+        bodyRb.gravityScale = 0.1f;
+        bodyRb.velocity = Vector2.up * bodyRb.velocity.y;
+        bodyRb.rotation = Mathf.Lerp(bodyRb.rotation, 0f, 0.15f);
+
+        List<Rigidbody2D> rbs = new List<Rigidbody2D> { frontLegRb, backLegRb, backArmRb, frontArmRb };
+        foreach (Rigidbody2D rb in rbs)
+        {
+            filler.PushMotion(rb, PointerMotion.None);
+            Vector2 position;
+            position.x = hit.point.x;
+            if (rb == frontLegRb || rb == backLegRb)
+                position.y = bodyRb.position.y - 1.5f;
+            else
+                position.y = bodyRb.position.y + 1.5f;
+            rb.position = Vector2.Lerp(rb.position, position, 0.15f);
+        }
+
+        if (controll.GetJump())
+        {
+            bodyRb.AddForce(new Vector2(hitLeft ? 1 : -1, 1) * jumpForce * bodyRb.mass, ForceMode2D.Impulse);
+            _currentState = States.Fall;
+            return;
+        }
+    }
+
     #endregion
 }
