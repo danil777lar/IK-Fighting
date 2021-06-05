@@ -30,6 +30,7 @@ public class DestroyableEnvironmentDamageTrigger : MonoBehaviour, IDamageTracker
             Destroy(_sprite.gameObject, _particlesOnDestroy.main.duration);
             _sprite.enabled = false;
             enabled = false;
+            Destroy(this);
         }
     }
 

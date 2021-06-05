@@ -9,16 +9,14 @@ public class ProcedureAnimation : MonoBehaviour
     [SerializeField] private float _angleLimitMin;
     [SerializeField] private float _angleLimitMax;
 
+    private float _lenght;
     private DirectionController _directionController;
     private List<Transform> _segments;
     private Dictionary<Transform, float> _segmentsLenght;
     private SpriteRenderer[] _spriteRenderers;
 
-    public Transform Pointer
-    {
-        get => _pointer;
-        protected set => _pointer = value;
-    }
+    public Transform Pointer => _pointer;
+    public float Lenght => _lenght;
 
     private void Start()
     {
@@ -44,9 +42,14 @@ public class ProcedureAnimation : MonoBehaviour
 
         _spriteRenderers = new SpriteRenderer[] { _segments[1].GetComponent<SpriteRenderer>(), _segments[2].GetComponent<SpriteRenderer>() };
 
+        _lenght = 0f;
         _segmentsLenght = new Dictionary<Transform, float>();
-        for (int i = 0; i < _segments.Count - 1; i++)
-            _segmentsLenght.Add(_segments[i], Vector2.Distance(_segments[i].position, _segments[i + 1].position));
+        for (int i = 0; i < _segments.Count - 1; i++) 
+        {
+            float l = Vector2.Distance(_segments[i].position, _segments[i + 1].position);
+            _segmentsLenght.Add(_segments[i], l);
+            _lenght += l;
+        }
     }
 
     private void RotateAndMove()

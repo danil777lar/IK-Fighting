@@ -15,10 +15,16 @@ public class BodyChangeTech : MonoBehaviour
     void Start()
     {
         _healthManager = GetComponent<HealthManager>();
-        _healthManager.OnPlayerDeath += BodyChange;
+        _healthManager.OnPlayerDeath += RunBodyChange;
     }
 
-    private void BodyChange(int damage, Vector2 direction) 
+    private void RunBodyChange(int damage, Vector2 direction) 
+    {
+        StartCoroutine(BodyChange(damage, direction));
+        _healthManager.OnPlayerDeath -= RunBodyChange;
+    }
+
+    private IEnumerator BodyChange(int damage, Vector2 direction) 
     {
         _healthManager.SetHeal(damage);
 
@@ -28,19 +34,21 @@ public class BodyChangeTech : MonoBehaviour
         GameObject spawnedObject = Instantiate(_objectToChangePrefab);
         spawnedObject.transform.position = GetComponent<PointerFiller>().GetPointer(KinematicsPointerType.Body).position;
 
+        float lifetime = _particleTrailPrefab.main.duration + _particleTrailPrefab.startLifetime;
+        Destroy(Instantiate(_particlesPrefab.gameObject, spawnedObject.transform.position, Quaternion.Euler(Vector3.zero)), _particlesPrefab.main.duration);
+        Destroy(Instantiate(_particleTrailPrefab.gameObject, spawnedObject.transform.position, Quaternion.Euler(Vector3.zero), spawnedObject.transform), lifetime);
+
         RaycastHit2D hit = Physics2D.Raycast(_body.position, direction, distance, LayerMask.GetMask("Ground"));
         if (hit)
             transform.position += (Vector3)direction * Vector2.Distance(_body.transform.position, hit.point);
         else
             transform.position += (Vector3)direction * distance;
+        transform.localScale = Vector2.zero;
 
-        Destroy(Instantiate(_particlesPrefab.gameObject, spawnedObject.transform.position, Quaternion.Euler(Vector3.zero)), _particlesPrefab.main.duration);
+        yield return new WaitForSeconds(1f);
+
+        transform.localScale = Vector2.one;
         Destroy(Instantiate(_particlesPrefab.gameObject, transform.position, Quaternion.Euler(Vector3.zero)), _particlesPrefab.main.duration);
-
-        float lifetime = _particleTrailPrefab.main.duration + _particleTrailPrefab.startLifetime;
-        Destroy(Instantiate(_particleTrailPrefab.gameObject, spawnedObject.transform.position, Quaternion.Euler(Vector3.zero), spawnedObject.transform), lifetime);
         Destroy(Instantiate(_particleTrailPrefab.gameObject, transform.position, Quaternion.Euler(Vector3.zero), _body.transform), lifetime);
-
-        _healthManager.OnPlayerDeath -= BodyChange;
     }
 }

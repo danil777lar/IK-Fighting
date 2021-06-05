@@ -6,8 +6,7 @@ using LarjeEnum;
 
 public class FightController : MonoBehaviour, IProgressInformation
 {
-    public List<Weapon> weapons = new List<Weapon>();
-
+    [SerializeField] private List<Weapon> weapons = new List<Weapon>();
     [SerializeField] private ProcedureAnimation _arm;
     [SerializeField] private Rigidbody2D _pointer;
     [SerializeField] private AttackForceIndicator _forceIndicator;
@@ -39,7 +38,7 @@ public class FightController : MonoBehaviour, IProgressInformation
 
     private void FixedUpdate()
     {
-        if (!_pointer.isKinematic)
+        if (!_pointer.isKinematic || _physicsMachine.CurrentState == PhysicsMachine.States.WallSlide)
         {
             _curentWeapon.SetDamagable(false, _aimValue);
             EnableAiming(false);
@@ -72,7 +71,8 @@ public class FightController : MonoBehaviour, IProgressInformation
             {
                 _curentWeapon.SetDamagable(true, _aimValue);
                 Rigidbody2D bodyRb = _filler.GetPointer(KinematicsPointerType.Body);
-                bodyRb.AddForce(_forceDirection * 10f * bodyRb.mass, ForceMode2D.Impulse);
+                bodyRb.velocity = Vector2.zero;
+                bodyRb.AddForce(_forceDirection * (10f * _aimValue) * bodyRb.mass, ForceMode2D.Impulse);
                 _filler.PushMotion(_pointer, _curentWeapon.OnPointerUp, () => _curentWeapon.SetDamagable(false, _aimValue));
             }
             EnableAiming(false);

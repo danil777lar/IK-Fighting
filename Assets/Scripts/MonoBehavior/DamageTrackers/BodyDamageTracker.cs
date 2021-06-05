@@ -24,10 +24,9 @@ public class BodyDamageTracker : MonoBehaviour, IDamageTracker
 
         _filler.PushMotion(_pointer, PointerMotion.None);
         _pointer.isKinematic = false;
-        _pointer.gravityScale = 0f;
 
         _pointer.velocity = Vector2.zero;
-        _pointer.AddForce(direction * 10f * _pointer.mass, ForceMode2D.Impulse);
+        _pointer.AddForce(direction * 20f * _pointer.mass, ForceMode2D.Impulse);
     }
     #endregion
 }
