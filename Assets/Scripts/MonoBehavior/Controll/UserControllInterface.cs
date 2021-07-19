@@ -9,12 +9,12 @@ public class UserControllInterface : MonoBehaviour, IControll
     #region Icontroll
     public bool GetAttackButtonDown(int button)
     {
-        return Input.GetMouseButtonDown(button);
+        return Input.GetMouseButtonDown(button) && LayerDefault.Default.IsPlaying;
     }
 
     public bool GetAttackButton(int button)
     {
-        return Input.GetMouseButton(button);
+        return Input.GetMouseButton(button) && LayerDefault.Default.IsPlaying;
     }
 
     public Vector2 GetAttackButtonNormal(int button)
@@ -32,22 +32,22 @@ public class UserControllInterface : MonoBehaviour, IControll
 
     public bool GetJump()
     {
-        return Input.GetKey("w");
+        return Input.GetKey("w") && LayerDefault.Default.IsPlaying;
     }
 
     public bool GetMoveLeft()
     {
-        return Input.GetKey("a");
+        return Input.GetKey("a") && LayerDefault.Default.IsPlaying;
     }
 
     public bool GetMoveRight()
     {
-        return Input.GetKey("d");
+        return Input.GetKey("d") && LayerDefault.Default.IsPlaying;
     }
 
     public bool GetMoveDown() 
     {
-        return Input.GetKey("s");
+        return Input.GetKey("s") && LayerDefault.Default.IsPlaying;
     }
 
     public Transform GetArmRoot() => _armRoot;

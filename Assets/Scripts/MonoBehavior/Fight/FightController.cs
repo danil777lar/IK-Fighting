@@ -79,17 +79,23 @@ public class FightController : MonoBehaviour, IProgressInformation
         }
     }
 
-    private void SetupWeapon() 
+    public void SetupWeapon(Weapon weapon = null) 
     {
         Transform oldEnd = _arm.transform.GetChild(_arm.transform.childCount - 1);
-        GameObject newWeapon = Instantiate(weapons[_curentWeaponId].gameObject);
+        Vector2 oldWeaponPos = oldEnd.position;
+        DestroyImmediate(oldEnd.gameObject);
+        if (_curentWeapon != null) 
+        {
+            oldWeaponPos = _curentWeapon.transform.position;
+            DestroyImmediate(_curentWeapon.gameObject);
+        }
+        GameObject newWeapon = Instantiate(!weapon ? weapons[_curentWeaponId].gameObject : weapon.gameObject);
         _curentWeapon = newWeapon.GetComponent<Weapon>();
 
         newWeapon.transform.SetParent(_arm.transform);
-        newWeapon.transform.position = oldEnd.position;
+        newWeapon.transform.position = oldWeaponPos;
         _curentWeapon.ChainEnd.SetParent(_arm.transform);
 
-        DestroyImmediate(oldEnd.gameObject);
         _arm.CalculateSegments();
 
         _physicsMachine.offsets[_pointer].bodyOffset = _curentWeapon.CalmOffset;

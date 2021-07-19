@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,23 +12,41 @@ public class LayerDefault : MonoBehaviour
 
     #endregion
 
-    #region Events
+    private bool _isPlaying;
+    public bool IsPlaying 
+    {
+        get => _isPlaying;
+        set 
+        {
+            _isPlaying = value;
+            if (value)
+                OnPlayStart.Invoke();
+            else
+                OnPlayStop.Invoke();
+        }
+    }
 
+    public Action OnPlayStart = () => { };
+    public Action OnPlayStop = () => { };
+
+    #region Events
     private void Awake()
     {
         Initialization();
     }
-
     #endregion
 
-    #region Iternal
+    public void Restart() 
+    {
 
+    }
+
+    #region Iternal
     private void Initialization() 
     {
         _default = this;
 
         Resources.Load<DataGameMain>("DataGameMain").Init();
     }
-
     #endregion
 }

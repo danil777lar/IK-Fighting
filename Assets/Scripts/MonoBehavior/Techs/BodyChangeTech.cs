@@ -26,7 +26,7 @@ public class BodyChangeTech : MonoBehaviour
 
     private IEnumerator BodyChange(int damage, Vector2 direction) 
     {
-        _healthManager.SetHeal(damage);
+        _healthManager.SetHeal(damage*5);
 
         float distance = 6f;
         Rigidbody2D _body = GetComponent<PointerFiller>().GetPointer(KinematicsPointerType.Body);
