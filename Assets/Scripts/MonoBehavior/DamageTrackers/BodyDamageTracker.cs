@@ -17,16 +17,15 @@ public class BodyDamageTracker : MonoBehaviour, IDamageTracker
     }
 
     #region IDamageTracker
-    public void SendDamage(int damage, Vector2 direction)
+    public void SendDamage(DamageInfo info)
     {
-        int processedDamage = Random.Range(damage / 2, damage + 1);
-        _healthManager.SetDamage(processedDamage, damage, direction);
+        int processedDamage = Random.Range(info.damage / 2, info.damage + 1);
+        _healthManager.SetDamage(processedDamage, info.damage, info.direction);
 
         _filler.PushMotion(_pointer, PointerMotion.None);
         _pointer.isKinematic = false;
 
-        _pointer.velocity = Vector2.zero;
-        _pointer.AddForce(direction * 20f * _pointer.mass, ForceMode2D.Impulse);
+        _pointer.velocity = info.speed;
     }
     #endregion
 }

@@ -24,17 +24,18 @@ public class Panel : MonoBehaviour
     public void ShowPanel() 
     {
         gameObject.SetActive(true);
+        onPanelShow.Invoke();
         transform.localScale = Vector3.one * 1.2f;
         transform.DOScale(1f, _animDuration);
         DOTween.To(
             () => 0f,
             (v) => _group.alpha = v,
             1f, _animDuration);
-        onPanelShow?.Invoke();
     }
 
     public void HidePanel() 
     {
+        onPanelHide.Invoke();
         transform.localScale = Vector3.one;
         transform.DOScale(1.2f, _animDuration);
         DOTween.To(
@@ -42,6 +43,5 @@ public class Panel : MonoBehaviour
             (v) => _group.alpha = v,
             0f, _animDuration)
                 .OnComplete(() => gameObject.SetActive(false));
-        onPanelHide?.Invoke();
     }
 }

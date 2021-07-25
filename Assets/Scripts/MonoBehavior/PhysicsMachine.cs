@@ -115,7 +115,8 @@ public class PhysicsMachine : MonoBehaviour
     {
         bodyRb.gravityScale = 0f;
         bodyRb.drag = 3f;
-        bodyRb.freezeRotation = true;
+        bodyRb.freezeRotation = false;
+        bodyRb.angularDrag = 10f;
 
         RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
         if (hit) 
@@ -139,19 +140,18 @@ public class PhysicsMachine : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
             if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight)
             {
+                Debug.DrawLine(bodyRb.position, hit.point, Color.red);
+                Debug.DrawLine(bodyRb.position, new Vector2(hit.point.x, hit.point.y + DataGameMain.Default.personStandHeight), Color.green);
                 Vector3 position = bodyRb.position;
                 if (controll.GetMoveDown())
                     position.y = Mathf.Lerp(position.y, hit.point.y + DataGameMain.Default.personStandHeight / 2f, Time.fixedDeltaTime * animationSpeed);
                 else
                     position.y = Mathf.Lerp(position.y, hit.point.y + DataGameMain.Default.personStandHeight, Time.fixedDeltaTime * animationSpeed);
 
-                position.y += (-Mathf.PerlinNoise(randSeed, Time.time * frequencySpeed)) * frequencyScale;
+                //position.y += (-Mathf.PerlinNoise(randSeed, Time.time * frequencySpeed)) * frequencyScale;
 
-                bodyRb.velocity = bodyRb.velocity * Vector2.right;
-
-                if (controll.GetMoveLeft()) bodyRb.velocity = Vector2.left * walkSpeed;
-                else if (controll.GetMoveRight()) bodyRb.velocity = Vector2.right * walkSpeed;
-                else position.x += (Mathf.PerlinNoise(Time.time * frequencySpeed, randSeed) - 0.5f) * frequencyScale;
+                if (controll.GetMoveLeft()) bodyRb.AddForce(Vector2.left * walkSpeed);
+                else if (controll.GetMoveRight()) bodyRb.AddForce(Vector2.right * walkSpeed);
 
                 RaycastHit2D hitLeft = Physics2D.Raycast(bodyRb.position, Vector2.left, 1f, LayerMask.GetMask("Ground"));
                 RaycastHit2D hitRight = Physics2D.Raycast(bodyRb.position, Vector2.right, 1f, LayerMask.GetMask("Ground"));
@@ -159,9 +159,7 @@ public class PhysicsMachine : MonoBehaviour
                 if (hitRight && !controll.GetMoveLeft()) bodyRb.velocity = Vector2.zero;
 
                 bodyRb.position = position;
-
-                float targetRotation = (bodyRb.velocity.x / walkSpeed) * -45f;
-                bodyRb.rotation = Mathf.Lerp(bodyRb.rotation, targetRotation, Time.fixedDeltaTime * animationSpeed);
+                bodyRb.transform.rotation = Quaternion.Lerp(bodyRb.transform.rotation, Quaternion.Euler(Vector3.zero), Time.fixedDeltaTime * animationSpeed);
 
                 if (controll.GetJump())
                 {
@@ -253,12 +251,13 @@ public class PhysicsMachine : MonoBehaviour
         bodyRb.gravityScale = 1f;
         bodyRb.drag = 0f;
         bodyRb.freezeRotation = false;
+        bodyRb.angularDrag = 0f;
     }
 
     private void FallUpdate() 
     {
         RaycastHit2D hit = Physics2D.Raycast(bodyRb.position, Vector2.down, 1000f, LayerMask.GetMask("Ground"));
-        if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight / 2f)
+        if (hit && Vector3.Distance(bodyRb.position, hit.point) <= DataGameMain.Default.personStandHeight / 2f && bodyRb.velocity.y <= 0f)
         {
             SwitchState(States.Stay);
             return;

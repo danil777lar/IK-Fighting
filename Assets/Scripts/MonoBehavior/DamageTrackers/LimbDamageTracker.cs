@@ -24,11 +24,11 @@ public class LimbDamageTracker : MonoBehaviour, IDamageTracker
     }
 
     #region IDamageTracker
-    public void SendDamage(int damage, Vector2 direction) 
+    public void SendDamage(DamageInfo info) 
     {
-        int halfdamage = damage / 2;
+        int halfdamage = info.damage / 2;
         int processedDamage = Random.Range(halfdamage / 2, halfdamage + 1);
-        _healthManager.SetDamage(processedDamage, damage, direction);
+        _healthManager.SetDamage(processedDamage, info.damage, info.direction);
 
         _filler.PushMotion(_pointer, PointerMotion.None);
         _pointer.isKinematic = false;
@@ -36,7 +36,7 @@ public class LimbDamageTracker : MonoBehaviour, IDamageTracker
 
         _pointer.position = transform.parent.GetChild(transform.parent.childCount - 1).position;
         _pointer.velocity = Vector2.zero;
-        _pointer.AddForce(direction * 10f * _pointer.mass, ForceMode2D.Impulse);
+        _pointer.AddForce(info.direction * 10f * _pointer.mass, ForceMode2D.Impulse);
 
         StartCoroutine(ReturnToKinematic(0.5f));
     }

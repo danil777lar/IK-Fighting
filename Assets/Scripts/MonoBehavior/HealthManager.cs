@@ -29,6 +29,7 @@ public class HealthManager : MonoBehaviour
         _health -= damage;
 
         _slider.DOValue(_health, 0.2f);
+            
 
         GameObject text = Instantiate(_damageText);
         text.GetComponent<DamageText>().Init(damage, maxDamage);
@@ -60,6 +61,7 @@ public class HealthManager : MonoBehaviour
         Destroy(GetComponent<PhysicsMachine>());
         foreach (Rigidbody2D rb in GetComponentsInChildren<Rigidbody2D>()) 
         {
+            rb.freezeRotation = false;
             rb.simulated = true;
             rb.isKinematic = false;
             rb.mass = 1f;
@@ -71,6 +73,6 @@ public class HealthManager : MonoBehaviour
 
         Rigidbody2D body = GetComponentInChildren<BodyDamageTracker>().GetComponent<Rigidbody2D>();
         body.velocity = Vector2.zero;
-        body.velocity = direction * 10f;
+        body.velocity = direction * 60f;
     }
 }

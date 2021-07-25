@@ -54,6 +54,8 @@ MonoBehaviour:
   _damageCollider: {fileID: 7127943884657068792}
   _trailParticles: {fileID: 6567442964865489912}
   _blockParticles: {fileID: 7893243843391716162}
+  _damagedParticles: {fileID: 1826718302231329064, guid: 82bf6b415095ffb498662e4b2b900de5,
+    type: 3}
 --- !u!50 &6490274554805301011
 Rigidbody2D:
   serializedVersion: 4
@@ -172,7 +174,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.0047043264, y: 0.028232276}

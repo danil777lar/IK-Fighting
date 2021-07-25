@@ -29,16 +29,16 @@ public class WeaponDamageTracker : MonoBehaviour, IDamageTracker
     }
 
     #region IDamageTracker
-    public void SendDamage(int damage, Vector2 direction)
+    public void SendDamage(DamageInfo info)
     {
         GetComponentInParent<PointerFiller>().PushMotion(_armPointer, PointerMotion.None);
         _armPointer.position = _armRoot.transform.GetChild(_armRoot.transform.childCount - 1).position;
         _armPointer.isKinematic = false;
         _armPointer.gravityScale = 0f;
-        _armPointer.AddForce(direction * 10f, ForceMode2D.Impulse);
+        _armPointer.AddForce(info.direction * 10f, ForceMode2D.Impulse);
 
         _bodyPointer.velocity = Vector2.zero;
-        _bodyPointer.AddForce(direction * 5f, ForceMode2D.Impulse);
+        _bodyPointer.AddForce(info.direction * 5f, ForceMode2D.Impulse);
 
         weapon.Block();
         StartCoroutine(ReturnToKinematic(0.5f));

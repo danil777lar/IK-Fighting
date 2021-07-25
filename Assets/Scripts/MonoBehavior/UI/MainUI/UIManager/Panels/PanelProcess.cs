@@ -11,14 +11,14 @@ public class PanelProcess : MonoBehaviour
 
     [SerializeField] private Panel _panel;
 
-    private void Start()
+    private void Awake()
     {
-        _panel = GetComponent<Panel>();
         _panel.onPanelShow += HandleOnPanelShow;
     }
 
     private void HandleOnPanelShow() 
     {
+        Debug.Log("Process panel showed");
         foreach (HealthManager health in FindObjectsOfType<HealthManager>())
             health.SetupSlider(health.gameObject.layer == LayerMask.NameToLayer("Player") ? _playerSlider : _enemySlider);
     }

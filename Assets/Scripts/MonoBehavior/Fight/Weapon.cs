@@ -21,13 +21,15 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Collider2D _damageCollider;
     [SerializeField] private ParticleSystem _trailParticles;
     [SerializeField] private ParticleSystem _blockParticles;
+    [SerializeField] private ParticleSystem _damagedParticles;
 
     private bool _isBlocked;
     private float _damageScale;
     private Vector2 _lastPoint;
     private Vector2 _forceDirection;
     private Rigidbody2D _armPointer;
-    private List<IDamageTracker> _damageTrackers;
+    private Rigidbody2D _bodyRb;
+    private List<DamageInfo> _damageTrackers;
 
     #region Lifecycle
 
@@ -35,6 +37,7 @@ public class Weapon : MonoBehaviour
     {
         PointerFiller filler = GetComponentInParent<PointerFiller>();
         _armPointer = filler.GetPointer(KinematicsPointerType.FrontArm);
+        _bodyRb = filler.GetPointer(KinematicsPointerType.Body);
         _damageCollider.gameObject.layer = GetComponentInParent<FightController>().gameObject.layer;
         _damageCollider.enabled = false;
 
@@ -48,18 +51,18 @@ public class Weapon : MonoBehaviour
         _lastPoint = _armPointer.position;
 
         _isBlocked = false;
-        _damageTrackers = new List<IDamageTracker>();
+        _damageTrackers = new List<DamageInfo>();
         StartCoroutine(ProcessCollisions());
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.TryGetComponent(out IDamageTracker tracker)) 
+        if (collision.gameObject.TryGetComponent(out IDamageTracker tracker)) 
         {
             if (tracker is WeaponDamageTracker)
-                tracker.SendDamage(_damage, _forceDirection);
+                new DamageInfo(_damage, _bodyRb.velocity, _forceDirection, tracker, collision.contacts).Send();
             else
-                _damageTrackers.Add(tracker);
+                _damageTrackers.Add(new DamageInfo(_damage, _bodyRb.velocity, _forceDirection, tracker, collision.contacts));            
         }
     }
 
@@ -81,8 +84,10 @@ public class Weapon : MonoBehaviour
         {
             if (arg)
                 _trailParticles.Play();
-            else
+            else 
+            {
                 _trailParticles.Stop();
+            }
         }
     }
 
@@ -91,7 +96,19 @@ public class Weapon : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         if (!_isBlocked)
-            foreach (IDamageTracker tracker in _damageTrackers)
-                tracker.SendDamage(_damage, _forceDirection);
+        {
+            if (_damagedParticles != null && _damageTrackers.Count > 0)
+            {
+                GameObject parts = Instantiate(_damagedParticles.gameObject);
+                parts.transform.position = _damageTrackers[0].contacts[0].point;
+                float rot = Mathf.Atan2(_forceDirection.x, _forceDirection.y) * Mathf.Rad2Deg;
+                parts.transform.rotation = Quaternion.Euler(0f, 0f, -(rot - 90f));
+                _bodyRb.velocity = -_bodyRb.velocity / 2f;
+                _bodyRb.GetComponent<ParticleSystem>().Stop();
+                Destroy(parts, _damagedParticles.main.duration);
+            }
+            foreach (DamageInfo info in _damageTrackers)
+                info.Send();
+        }
     }
 }

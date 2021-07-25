@@ -85,6 +85,8 @@ MonoBehaviour:
   _damageCollider: {fileID: 7107550637162257972}
   _trailParticles: {fileID: 0}
   _blockParticles: {fileID: 0}
+  _damagedParticles: {fileID: 1328350868607390022, guid: 6989ea54fa0df9245a308ca2e4cbd2b7,
+    type: 3}
 --- !u!58 &7107550637162257972
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -95,7 +97,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

@@ -19,11 +19,11 @@ public class DestroyableEnvironmentDamageTrigger : MonoBehaviour, IDamageTracker
 
     #region IDamageTracker
 
-    public void SendDamage(int damage, Vector2 direction) 
+    public void SendDamage(DamageInfo info) 
     {
-        _curentHealth -= damage;
+        _curentHealth -= info.damage;
         if (_curentHealth > 0)
-            _rb.AddForce(direction * 10f * _mass, ForceMode2D.Impulse);
+            _rb.AddForce(info.direction * 10f * _mass, ForceMode2D.Impulse);
         else 
         {
             _particlesOnDestroy.Play();

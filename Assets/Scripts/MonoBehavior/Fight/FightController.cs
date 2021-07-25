@@ -71,9 +71,10 @@ public class FightController : MonoBehaviour, IProgressInformation
             {
                 _curentWeapon.SetDamagable(true, _aimValue);
                 Rigidbody2D bodyRb = _filler.GetPointer(KinematicsPointerType.Body);
-                bodyRb.velocity = Vector2.zero;
-                bodyRb.AddForce(_forceDirection * (10f * _aimValue) * bodyRb.mass, ForceMode2D.Impulse);
+                float force = ((Mathf.Abs(bodyRb.velocity.x) * 2f * _aimValue) + (10f * _aimValue)) * bodyRb.mass;
+                bodyRb.AddForce(_forceDirection * force, ForceMode2D.Impulse);
                 _filler.PushMotion(_pointer, _curentWeapon.OnPointerUp, () => _curentWeapon.SetDamagable(false, _aimValue));
+                bodyRb.GetComponent<ParticleSystem>().Play();
             }
             EnableAiming(false);
         }

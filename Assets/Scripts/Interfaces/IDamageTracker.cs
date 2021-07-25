@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageTracker
 {
-    void SendDamage(int damage, Vector2 direction);
+    void SendDamage(DamageInfo damageInfo);
 }
