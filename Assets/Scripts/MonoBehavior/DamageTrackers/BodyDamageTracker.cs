@@ -5,6 +5,8 @@ using LarjeEnum;
 
 public class BodyDamageTracker : MonoBehaviour, IDamageTracker
 {
+    [SerializeField] private ParticleSystem _bloodParticles;
+
     private HealthManager _healthManager;
     private Rigidbody2D _pointer;
     private PointerFiller _filler;
@@ -28,6 +30,15 @@ public class BodyDamageTracker : MonoBehaviour, IDamageTracker
         _pointer.isKinematic = false;
 
         _pointer.velocity = info.speed;
+
+
+        GameObject parts = Instantiate(_bloodParticles.gameObject);
+        float rot = Mathf.Atan2(info.direction.x, info.direction.y) * Mathf.Rad2Deg;
+        parts.transform.position = info.contacts[0].point;
+        parts.transform.rotation = Quaternion.Euler(0f, 0f, -(rot - 90f));
+        parts.transform.SetParent(transform);
+        Destroy(parts, _bloodParticles.main.duration);
+
         BloodDrawer.Draw(_sprite, info.contacts[0].point);
     }
     #endregion

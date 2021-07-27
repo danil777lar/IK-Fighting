@@ -9768,6 +9768,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5434823695637852710, guid: c51e45a3f73fe994092827e0d02ef54a,
         type: 3}
+    - target: {fileID: 1185402943736834913, guid: 6a2f6e8588538aa43843f7bf6a9276e1,
+        type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1289198668588898157, guid: 6a2f6e8588538aa43843f7bf6a9276e1,
         type: 3}
       propertyPath: _otherController

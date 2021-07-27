@@ -14,6 +14,8 @@ public class DataGameMain : ScriptableObject
 
     public float personStandHeight = 2f;
     public float personStepLenght = 2f;
+    public float bloodMaxRad = 5;
+    public float bloodMinPaintForce = 0.5f;
 
     public void Init() 
     {

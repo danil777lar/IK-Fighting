@@ -6,8 +6,8 @@ public class BloodDrawer
 {
     public static void Draw(SpriteRenderer rend, Vector2 point) 
     {
-        float rad = Random.Range(1, 5);
-        float paintForce = Random.Range(0.4f, 1f);
+        float rad = Random.Range(1, DataGameMain.Default.bloodMaxRad);
+        float paintForce = Random.Range(DataGameMain.Default.bloodMinPaintForce, 1f);
 
         Vector2Int nearestPixel = Vector2Int.zero;
         Texture2D texture = new Texture2D(rend.sprite.texture.width, rend.sprite.texture.height);
