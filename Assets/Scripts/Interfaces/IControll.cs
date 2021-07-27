@@ -14,9 +14,9 @@ public interface IControll
 
     bool GetMoveDown();
 
-    bool GetAttackButtonDown(int button);
+    bool GetAttackButtonDown();
 
-    bool GetAttackButton(int button);
+    bool GetAttackButton();
 
-    Vector2 GetAttackButtonNormal(int button);
+    Vector2 GetAttackButtonNormal();
 }

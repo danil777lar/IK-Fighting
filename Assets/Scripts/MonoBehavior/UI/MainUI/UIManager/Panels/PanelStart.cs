@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MLAPI;
 using DG.Tweening;
 
 [RequireComponent(typeof(Panel))]
@@ -10,6 +11,8 @@ public class PanelStart : MonoBehaviour
     [SerializeField] private Button _buttonStart;
     [SerializeField] private Button _weaponsButton;
     [SerializeField] private Button _skinsButton;
+    [SerializeField] private Button _hostButton;
+    [SerializeField] private Button _clientButton;
     [SerializeField] private PlayerCustomizeBar _weaponsPanel;
     [SerializeField] private PlayerCustomizeBar _skinsPanel;
 
@@ -25,6 +28,8 @@ public class PanelStart : MonoBehaviour
 
         _weaponsButton.onClick.AddListener(() => OpenCustomizeBar(_weaponsPanel));
         _skinsButton.onClick.AddListener(() => OpenCustomizeBar(_skinsPanel));
+        _hostButton.onClick.AddListener(() => NetworkManager.Singleton.StartHost());
+        _clientButton.onClick.AddListener(() => NetworkManager.Singleton.StartClient());
 
         _weaponsPanel.onClose += () => SwitchButtons(true);
         _skinsPanel.onClose += () => SwitchButtons(true);

@@ -45,7 +45,7 @@ public class FightController : MonoBehaviour, IProgressInformation
             return;
         }
 
-        if (_controll.GetAttackButton(0) && !_isAiming)
+        if (_controll.GetAttackButton() && !_isAiming)
         {
             if (_curentWeapon.OnPointerDown != PointerMotion.None)
                 _filler.PushMotion(_pointer, _curentWeapon.OnPointerDown, () => EnableAiming(true));
@@ -56,16 +56,16 @@ public class FightController : MonoBehaviour, IProgressInformation
             }
         }
 
-        if (_controll.GetAttackButton(0) && _isAiming)
+        if (_controll.GetAttackButton() && _isAiming)
         {
-            _forceDirection = _controll.GetAttackButtonNormal(0);
+            _forceDirection = _controll.GetAttackButtonNormal();
             Vector2 offset = _curentWeapon.CalmOffset.magnitude * -_forceDirection;
             offset.x *= GetComponent<DirectionController>().Direction;
 
             _aimOffset = offset;
         }
 
-        if (!_controll.GetAttackButton(0) && _isAiming)
+        if (!_controll.GetAttackButton() && _isAiming)
         {
             if (AimValue > 0.5f)
             {
