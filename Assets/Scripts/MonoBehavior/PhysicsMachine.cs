@@ -147,8 +147,7 @@ public class PhysicsMachine : MonoBehaviour
                     position.y = Mathf.Lerp(position.y, hit.point.y + DataGameMain.Default.personStandHeight / 2f, Time.fixedDeltaTime * animationSpeed);
                 else
                     position.y = Mathf.Lerp(position.y, hit.point.y + DataGameMain.Default.personStandHeight, Time.fixedDeltaTime * animationSpeed);
-
-                //position.y += (-Mathf.PerlinNoise(randSeed, Time.time * frequencySpeed)) * frequencyScale;
+                position.y += (-Mathf.PerlinNoise(randSeed, Time.time * frequencySpeed)) * frequencyScale;
 
                 if (controll.GetMoveLeft()) bodyRb.AddForce(Vector2.left * walkSpeed);
                 else if (controll.GetMoveRight()) bodyRb.AddForce(Vector2.right * walkSpeed);

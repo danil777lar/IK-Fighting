@@ -8,12 +8,14 @@ public class BodyDamageTracker : MonoBehaviour, IDamageTracker
     private HealthManager _healthManager;
     private Rigidbody2D _pointer;
     private PointerFiller _filler;
+    private SpriteRenderer _sprite;
 
     private void Start()
     {
         _filler = GetComponentInParent<PointerFiller>();
         _healthManager = GetComponentInParent<HealthManager>();
         _pointer = GetComponent<Rigidbody2D>();
+        _sprite = GetComponent<SpriteRenderer>();
     }
 
     #region IDamageTracker
@@ -26,6 +28,7 @@ public class BodyDamageTracker : MonoBehaviour, IDamageTracker
         _pointer.isKinematic = false;
 
         _pointer.velocity = info.speed;
+        BloodDrawer.Draw(_sprite, info.contacts[0].point);
     }
     #endregion
 }

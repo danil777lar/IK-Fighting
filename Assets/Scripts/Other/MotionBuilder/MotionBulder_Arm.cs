@@ -20,7 +20,7 @@ public static partial class MotionBuilder
         Vector2 start = t.position - (Vector2)armRoot.position;
         Vector2 target = ((Vector2)armRoot.position - t.position).normalized * armRoot.GetComponent<ProcedureAnimation>().Lenght;
 
-        if (normal.y > 0.5 || normal.y < -0.5)     
+        if (false)//(normal.y > 0.5 || normal.y < -0.5)     
         {
             tween = DOTween.To
                 (() => 0f,
