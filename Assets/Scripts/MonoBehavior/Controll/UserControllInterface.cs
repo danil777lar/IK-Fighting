@@ -8,7 +8,7 @@ public class UserControllInterface : NetworkBehaviour, IControll
 {
     [SerializeField] private Transform _armRoot;
 
-/*    private NetworkVariableBool _jump;
+    private NetworkVariableBool _jump;
     private NetworkVariableBool _left;
     private NetworkVariableBool _right;
     private NetworkVariableBool _down;
@@ -31,11 +31,11 @@ public class UserControllInterface : NetworkBehaviour, IControll
         _attack = new NetworkVariableBool(sets);
         _attackDown = new NetworkVariableBool(sets);
         _attackNormal = new NetworkVariableVector2(sets);
-    }*/
+    }
 
-/*    private void Update()
+    private void Update()
     {
-        if (IsLocalPlayer) 
+        if (IsLocalPlayer)
         {
             _jump.Value = Input.GetKey("w") && LayerDefault.Default.IsPlaying;
             _left.Value = Input.GetKey("a") && LayerDefault.Default.IsPlaying;
@@ -54,48 +54,48 @@ public class UserControllInterface : NetworkBehaviour, IControll
             }
             else _attackNormal.Value = Vector2.zero;
         }
-    }*/
+    }
 
     #region Icontroll
     public bool GetJump()
     {
-        return Input.GetKey("w") && LayerDefault.Default.IsPlaying;
-        //return _jump.Value;
+        //return Input.GetKey("w") && LayerDefault.Default.IsPlaying;
+        return _jump.Value;
     }
 
     public bool GetMoveLeft()
     {
-        return Input.GetKey("a") && LayerDefault.Default.IsPlaying;
-        //return _left.Value;
+        //return Input.GetKey("a") && LayerDefault.Default.IsPlaying;
+        return _left.Value;
     }
 
     public bool GetMoveRight()
     {
-        return Input.GetKey("d") && LayerDefault.Default.IsPlaying;
-        //return _right.Value;
+        //return Input.GetKey("d") && LayerDefault.Default.IsPlaying;
+        return _right.Value;
     }
 
     public bool GetMoveDown() 
     {
-        return Input .GetKey("s") && LayerDefault.Default.IsPlaying;
-        //return _down.Value;
+        //return Input .GetKey("s") && LayerDefault.Default.IsPlaying;
+        return _down.Value;
     }
 
     public bool GetAttackButton()
     {
-        return Input.GetMouseButton(0) && LayerDefault.Default.IsPlaying;
-        //return _attack.Value;
+        //return Input.GetMouseButton(0) && LayerDefault.Default.IsPlaying;
+        return _attack.Value;
     }
 
     public bool GetAttackButtonDown()
     {
-        return Input.GetMouseButtonDown(0) && LayerDefault.Default.IsPlaying;
-        //return _attackDown.Value;
+        //return Input.GetMouseButtonDown(0) && LayerDefault.Default.IsPlaying;
+        return _attackDown.Value;
     }
 
     public Vector2 GetAttackButtonNormal()
     {
-        if (Input.GetMouseButton(0))
+/*        if (Input.GetMouseButton(0))
         {
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = 10f;
@@ -103,8 +103,8 @@ public class UserControllInterface : NetworkBehaviour, IControll
             Debug.DrawLine(mousePosition, (Vector2)_armRoot.position, Color.red);
             return ((Vector2)(mousePosition - _armRoot.position)).normalized;
         }
-        else return Vector2.zero;
-        //return _attackNormal.Value;
+        else return Vector2.zero;*/
+        return _attackNormal.Value;
     }
 
     public Transform GetArmRoot() => _armRoot;

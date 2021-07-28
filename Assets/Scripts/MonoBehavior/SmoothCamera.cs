@@ -5,31 +5,20 @@ using DG.Tweening;
 
 public class SmoothCamera : MonoBehaviour
 {
-    private static SmoothCamera _default;
-    public static SmoothCamera Default => _default;
-
     [SerializeField] private float _positionSmooth;
     [SerializeField] private float _rotationSmooth;
-
-    [SerializeField] public Transform _target;
     [SerializeField] private Vector3 _positionOffset;
+
+    private Transform _target;
 
     private void Start()
     {
-        _default = this;
-
         Camera.main.fieldOfView = 40f;
         LayerDefault.Default.OnPlayStart += () =>
         {
             Camera.main.DOFieldOfView(70f, 1f)
                 .SetEase(Ease.InQuint);
         };
-    }
-
-    public void Init(Transform target)
-    {
-        _target = target;
-        _positionOffset = _target.position - transform.position;
     }
 
     private void FixedUpdate()
@@ -43,5 +32,6 @@ public class SmoothCamera : MonoBehaviour
             if (_positionSmooth != -1f) transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime / _positionSmooth);
             if (_rotationSmooth != -1f) transform.rotation = Quaternion.Lerp(transform.rotation, _target.rotation, Time.deltaTime / _rotationSmooth);
         }
+        else _target = PlayerNetworkSpawner.Default?.Body;
     }
 }

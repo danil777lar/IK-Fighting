@@ -6,20 +6,27 @@ using LarjeEnum;
 
 public class PlayerNetworkSpawner : NetworkBehaviour
 {
-    [SerializeField] private List<GameObject> objectsToDelete = new List<GameObject>();
+    //[SerializeField] private List<GameObject> objectsToDelete = new List<GameObject>();
+    private static PlayerNetworkSpawner _default;
+    public static PlayerNetworkSpawner Default => _default;
 
-    void Start()
+    [SerializeField] private Transform _body;
+
+    public Transform Body => _body;
+
+    private void Start()
     {
-        if (IsLocalPlayer)
-            SmoothCamera.Default.Init(GetComponent<PointerFiller>().GetPointer(KinematicsPointerType.Body).transform);
-        else
+        if (!IsOwner)
         {
             foreach (Transform t in GetComponentsInChildren<Transform>())
                 t.gameObject.layer = LayerMask.NameToLayer("Enemy");
         }
+        else _default = this;
+
         GetComponent<DirectionController>().Connect();
-
-
+        if (IsOwnedByServer) transform.position = LevelController.Default.HostSpawnPosition;
+        else transform.position = LevelController.Default.ClientSpawnPosition;
+/*
 
         if (!IsLocalPlayer) 
         {
@@ -42,6 +49,6 @@ public class PlayerNetworkSpawner : NetworkBehaviour
         if (!IsHost) 
         {
 
-        }
+        }*/
     }
 }
