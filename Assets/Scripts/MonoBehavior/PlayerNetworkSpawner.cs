@@ -4,23 +4,44 @@ using UnityEngine;
 using MLAPI;
 using LarjeEnum;
 
-public class PlayerNetworkSpawner : MonoBehaviour
+public class PlayerNetworkSpawner : NetworkBehaviour
 {
-    private NetworkObject _netObject;
+    [SerializeField] private List<GameObject> objectsToDelete = new List<GameObject>();
 
     void Start()
     {
-        _netObject = GetComponent<NetworkObject>();
-        if (!_netObject.IsOwner)
+        if (IsLocalPlayer)
+            SmoothCamera.Default.Init(GetComponent<PointerFiller>().GetPointer(KinematicsPointerType.Body).transform);
+        else
+        {
             foreach (Transform t in GetComponentsInChildren<Transform>())
                 t.gameObject.layer = LayerMask.NameToLayer("Enemy");
-        else 
-            SmoothCamera.Default.Init(GetComponent<PointerFiller>().GetPointer(KinematicsPointerType.Body).transform);
-
+        }
         GetComponent<DirectionController>().Connect();
-    }
 
-    void Update()
-    {
+
+
+        if (!IsLocalPlayer) 
+        {
+            GetComponent<FightController>().Start();
+            GetComponent<FightController>().enabled = false;
+            GetComponent<PhysicsMachine>().enabled = false;
+            GetComponent<PointerFiller>().enabled = false;
+            GetComponent<PhysicsMachine>().enabled = false;
+            GetComponentInChildren<Weapon>().enabled = false;
+            foreach (HingeJoint2D hinge in GetComponentsInChildren<HingeJoint2D>()) 
+                hinge.enabled = false;
+            foreach (Rigidbody2D rb in GetComponentsInChildren<Rigidbody2D>())
+                rb.simulated = false;
+            foreach (ProcedureAnimation rb in GetComponentsInChildren<ProcedureAnimation>())
+                rb.enabled = false;
+            foreach (GameObject go in objectsToDelete)
+                Destroy(go);
+        }
+
+        if (!IsHost) 
+        {
+
+        }
     }
 }

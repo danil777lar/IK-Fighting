@@ -25,6 +25,11 @@ public class LayerDefault : MonoBehaviour
                 OnPlayStop.Invoke();
         }
     }
+    public string Nickname 
+    {
+        get => PlayerPrefs.GetString("Nickname", "Guest");
+        set => PlayerPrefs.SetString("Nickname", value);
+    }
 
     public Action OnPlayStart = () => { };
     public Action OnPlayStop = () => { };

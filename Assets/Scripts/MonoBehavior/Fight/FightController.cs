@@ -28,7 +28,7 @@ public class FightController : MonoBehaviour, IProgressInformation
     public Vector2 StartPosition => _startPosition;
     public Vector2 AimOffset => _aimOffset; 
 
-    private void Start()
+    public void Start()
     {
         _physicsMachine = GetComponent<PhysicsMachine>();
         _controll = GetComponent<IControll>();
