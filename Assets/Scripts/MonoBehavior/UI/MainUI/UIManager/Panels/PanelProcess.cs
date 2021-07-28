@@ -2,17 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(Panel))]
 public class PanelProcess : MonoBehaviour
 {
+    private static PanelProcess _default;
+    public static PanelProcess Default => _default;
+
     [SerializeField] private Slider _playerSlider;
     [SerializeField] private Slider _enemySlider;
 
     [SerializeField] private Panel _panel;
 
+    public TextMeshProUGUI text;
+
     private void Awake()
     {
+        _default = this;
         _panel.onPanelShow += HandleOnPanelShow;
     }
 

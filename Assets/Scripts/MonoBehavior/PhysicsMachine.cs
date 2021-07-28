@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using LarjeEnum;
+using MLAPI;
+using MLAPI.NetworkVariable;
 
-public class PhysicsMachine : MonoBehaviour
+public class PhysicsMachine : NetworkBehaviour
 {
     public enum States { Stay, Fall, WallSlide }
 
@@ -36,7 +38,9 @@ public class PhysicsMachine : MonoBehaviour
     [SerializeField] private ParticleSystem fallDownParticles;
 
     [HideInInspector] public Dictionary<Rigidbody2D, PointerOffset> offsets;
+
     private int _randSeed;
+    private float _trueTime;
     private PointerFiller _filler;
     private DirectionController _direction;
     private FightController _fight;
@@ -49,7 +53,25 @@ public class PhysicsMachine : MonoBehaviour
     private Rigidbody2D frontLegRb;
     private Rigidbody2D backLegRb;
 
+    private NetworkVariableFloat _ownerTime;
+    private NetworkVariableInt _ownerSeed;
+
     public States CurrentState => _currentState;
+
+    private void Awake()
+    {
+        NetworkVariableSettings sets = new NetworkVariableSettings
+        {
+            ReadPermission = NetworkVariablePermission.Everyone,
+            WritePermission = NetworkVariablePermission.Everyone
+        };
+
+        _ownerTime = new NetworkVariableFloat(sets);
+        _ownerSeed = new NetworkVariableInt(sets);
+
+        _ownerTime.Value = 1f;
+        _ownerSeed.Value = 1;
+    }
 
     private void Start()
     {
@@ -90,6 +112,18 @@ public class PhysicsMachine : MonoBehaviour
             case States.WallSlide:
                 WallSlideUpdate();
                 break;
+        }
+
+        if (IsOwner) 
+        {
+            _trueTime = Time.time;
+            if (_ownerSeed.Value != _randSeed) _ownerSeed.Value = _randSeed;
+            if (_ownerTime.Value != _trueTime) _ownerTime.Value = _trueTime;
+        }
+        else 
+        {
+            _randSeed = _ownerSeed.Value;
+            _trueTime = _ownerTime.Value;
         }
     }
 
@@ -147,7 +181,7 @@ public class PhysicsMachine : MonoBehaviour
                     position.y = Mathf.Lerp(position.y, hit.point.y + DataGameMain.Default.personStandHeight / 2f, Time.fixedDeltaTime * animationSpeed);
                 else
                     position.y = Mathf.Lerp(position.y, hit.point.y + DataGameMain.Default.personStandHeight, Time.fixedDeltaTime * animationSpeed);
-                position.y += (-Mathf.PerlinNoise(_randSeed, Time.time * frequencySpeed)) * frequencyScale;
+                position.y += (-Mathf.PerlinNoise(_randSeed, _trueTime * frequencySpeed)) * frequencyScale;
 
                 if (_controll.GetMoveLeft()) bodyRb.AddForce(Vector2.left * walkSpeed);
                 else if (_controll.GetMoveRight()) bodyRb.AddForce(Vector2.right * walkSpeed);
@@ -235,8 +269,8 @@ public class PhysicsMachine : MonoBehaviour
                     Vector2 offset = offsets[rb].bodyOffset;
                     offset.x *= _direction.Direction;
                     Vector2 position = bodyRb.position + offset;
-                    position.x += (Mathf.PerlinNoise(Time.time, _randSeed + rbs.IndexOf(rb)) - 0.5f) * offsets[rb].noiseScale;
-                    position.y += (Mathf.PerlinNoise(_randSeed + rbs.IndexOf(rb), Time.time) - 0.5f) * offsets[rb].noiseScale;
+                    position.x += (Mathf.PerlinNoise(_trueTime, _randSeed + rbs.IndexOf(rb)) - 0.5f) * offsets[rb].noiseScale;
+                    position.y += (Mathf.PerlinNoise(_randSeed + rbs.IndexOf(rb), _trueTime) - 0.5f) * offsets[rb].noiseScale;
                     rb.position = Vector2.Lerp(rb.position, position, Time.fixedDeltaTime * offsets[rb].transitionSpeed * (bodyRb.velocity.x + 1));
                 }
             }
@@ -349,8 +383,8 @@ public class PhysicsMachine : MonoBehaviour
         Vector2 offset = offsets[frontArmRb].bodyOffset;
         offset.x *= _direction.Direction;
         position = bodyRb.position + offset;
-        position.x += (Mathf.PerlinNoise(Time.time, _randSeed + rbs.IndexOf(frontArmRb)) - 0.5f) * offsets[frontArmRb].noiseScale;
-        position.y += (Mathf.PerlinNoise(_randSeed + rbs.IndexOf(frontArmRb), Time.time) - 0.5f) * offsets[frontArmRb].noiseScale;
+        position.x += (Mathf.PerlinNoise(_trueTime, _randSeed + rbs.IndexOf(frontArmRb)) - 0.5f) * offsets[frontArmRb].noiseScale;
+        position.y += (Mathf.PerlinNoise(_randSeed + rbs.IndexOf(frontArmRb), _trueTime) - 0.5f) * offsets[frontArmRb].noiseScale;
         frontArmRb.position = Vector2.Lerp(frontArmRb.position, position, Time.fixedDeltaTime * offsets[frontArmRb].transitionSpeed * (bodyRb.velocity.x + 1));
 
         if (_controll.GetJump())

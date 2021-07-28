@@ -10,6 +10,10 @@ using TMPro;
 [RequireComponent(typeof(Panel))]
 public class PanelStart : NetworkBehaviour
 {
+    private static PanelStart _default;
+    public static PanelStart Default => _default;
+
+
     [SerializeField] private Panel _panel;
     [Space]
     [SerializeField] private Button _weaponsButton;
@@ -31,6 +35,8 @@ public class PanelStart : NetworkBehaviour
 
     private void Awake()
     {
+        _default = this;
+
         _panel.onPanelShow += HandlePanelShow;
         _panel.onPanelHide += HandlePanelHide;
     }
@@ -50,7 +56,7 @@ public class PanelStart : NetworkBehaviour
         _clientIndicator = _clientButton.GetComponent<Image>();
     }
 
-    private void Update() 
+    private void FixedUpdate() 
     {
         if (netVar != null)
         {
@@ -66,10 +72,7 @@ public class PanelStart : NetworkBehaviour
             _clientNick.text = netVar.clientName.Value;
 
             if (netVar.host.Value && netVar.client.Value)
-            {
-                UIManager.Default.CurentState = UIManager.State.Process;
-                LayerDefault.Default.IsPlaying = true;
-            }
+                netVar.StartGame();
         }
     }
 
@@ -80,10 +83,7 @@ public class PanelStart : NetworkBehaviour
             Instantiate(_varPrefab.gameObject);
             _hostButton.onClick.AddListener(() => netVar.host.Value = netVar.host.Value ? false : true);
         }
-        else 
-        {
-            _clientButton.onClick.AddListener(() => netVar.client.Value = netVar.client.Value ? false : true);
-        }
+        else  _clientButton.onClick.AddListener(() => netVar.client.Value = netVar.client.Value ? false : true);
 
         _clientButton.interactable = IsClient;
         _hostButton.interactable = IsHost;
@@ -91,9 +91,7 @@ public class PanelStart : NetworkBehaviour
 
     private void HandlePanelHide()
     {
-        if (IsHost && netVar != null)
-            Destroy(netVar.gameObject);
-        netVar = null;
+        if (netVar) netVar = null;
         _hostButton.onClick.RemoveAllListeners();
         _clientButton.onClick.RemoveAllListeners();
     }
@@ -113,13 +111,5 @@ public class PanelStart : NetworkBehaviour
                 .OnComplete(() => b.gameObject.SetActive(arg));
 
         }
-    }
-
-    private void HandleOnButtonStartClick() 
-    {
-        if (IsHost)
-            netVar.host.Value = netVar.host.Value ? false : true;
-        else
-            netVar.client.Value = netVar.client.Value ? false : true;
     }
 }

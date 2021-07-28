@@ -10,6 +10,7 @@ public class PanelStartNetVariables : NetworkBehaviour
     public NetworkVariableBool client;
     public NetworkVariableString hostName;
     public NetworkVariableString clientName;
+    public NetworkVariableBool clientReadyToDestroy;
 
     private void Awake()
     {
@@ -22,19 +23,38 @@ public class PanelStartNetVariables : NetworkBehaviour
         client = new NetworkVariableBool(sets);
         hostName = new NetworkVariableString(sets);
         clientName = new NetworkVariableString(sets);
-
-        host.Value = false;
-        client.Value = false;
+        clientReadyToDestroy = new NetworkVariableBool(sets);
     }
 
     private void Start()
     {
-        if (IsHost) GetComponent<NetworkObject>().Spawn();
-        PanelStart panel = UIManager.Default.GetComponentInChildren<PanelStart>(true);
-        transform.SetParent(panel.transform);
-        panel.netVar = this;
+        if (IsHost) 
+        {
+            GetComponent<NetworkObject>().Spawn();
+            if (PanelStart.Default.netVar != null)
+                Destroy(PanelStart.Default.netVar.gameObject);
+        }
+
+        transform.SetParent(PanelStart.Default.transform);
+        PanelStart.Default.netVar = this;
 
         if (IsHost) hostName.Value = LayerDefault.Default.Nickname;
         if (IsClient) clientName.Value = LayerDefault.Default.Nickname;
+    }
+
+    public void StartGame()
+    {
+        if (IsClient && !clientReadyToDestroy.Value) 
+        {
+            Debug.Log("Client start");
+            UIManager.Default.CurentState = UIManager.State.Process;
+            LayerDefault.Default.IsPlaying = true;
+        }
+        if (IsHost && clientReadyToDestroy.Value) 
+        {
+            UIManager.Default.CurentState = UIManager.State.Process;
+            LayerDefault.Default.IsPlaying = true;
+            Destroy(gameObject);
+        }            
     }
 }
