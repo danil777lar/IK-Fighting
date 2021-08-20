@@ -5207,10 +5207,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -8742,24 +8742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b576a8a71513543b774adad343c53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1975363202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1975363199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89dc8d3c442c7e24d820ea0ea44ca71e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _objectToChangePrefab: {fileID: 5176240133323973599, guid: 714c5993e68d0674db6847b814310e5c,
-    type: 3}
-  _particlesPrefab: {fileID: 5772116030814554920, guid: ad284f88b7f9d1b4a9ea94342bd34ac2,
-    type: 3}
-  _particleTrailPrefab: {fileID: 5772116030814554920, guid: f2e2ff525040f5a4dbef3b91d10e3d75,
-    type: 3}
 --- !u!4 &1975363205 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5011246828187753701, guid: 6a2f6e8588538aa43843f7bf6a9276e1,
@@ -9811,6 +9793,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759762102923796450, guid: 0edbed0876ed86b4a80c3929cad1c7c9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.073
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759762102923796450, guid: 0edbed0876ed86b4a80c3929cad1c7c9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -17.483
       objectReference: {fileID: 0}
     - target: {fileID: 4101708782194674385, guid: 0edbed0876ed86b4a80c3929cad1c7c9,
         type: 3}

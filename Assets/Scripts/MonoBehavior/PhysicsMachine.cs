@@ -270,6 +270,15 @@ public class PhysicsMachine : MonoBehaviour
             return;
         }
 
+        if (controll.GetAttackButton(0) || !controll.GetJump())
+        {
+            bodyRb.angularVelocity = 0f;
+            bodyRb.transform.rotation = Quaternion.Lerp(bodyRb.transform.rotation, Quaternion.Euler(Vector3.zero), Time.fixedDeltaTime * animationSpeed * 2f);
+        }
+        else
+            bodyRb.angularVelocity = bodyRb.velocity.x * -30f;
+        bodyRb.angularVelocity = Mathf.Clamp(bodyRb.angularVelocity, -250f, 250f);
+
         List<Rigidbody2D> rbs = new List<Rigidbody2D> { frontLegRb, backLegRb };
         foreach (Rigidbody2D rb in rbs)
         {
